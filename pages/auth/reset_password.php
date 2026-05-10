@@ -23,38 +23,29 @@
 
         </div>
 
-        <!-- Login Box -->
+        <!-- Reset Password Box -->
         <div class="form-container">
 
-            <form action="login_process.php" method="POST">
+            <form action="reset_password_process.php" method="POST">
+
+                <h2>Reset Password</h2>
 
                 <div class="input-group">
 
-                    <input type="text" name="username" placeholder="TP Number" required>
+                    <input type="text" name="password" placeholder="Password" required>
 
                 </div>
 
                 <div class="input-group">
 
-                    <input type="password" name="password" placeholder="Password" required>
-
-                </div>
-
-                <!-- Forget Password Function -->
-                <div class="forget-password">
-
-                    <a href="forget_password.php">
-
-                        Forget Password?
-
-                    </a>
+                    <input type="text" name="confirm_password" placeholder="Confirm Password" required>
 
                 </div>
 
                 <!-- Submit Button -->
                 <button type="submit" name="loginBtn">
 
-                    Login
+                    Set Password
 
                 </button>
 

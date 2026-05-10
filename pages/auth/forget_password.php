@@ -23,10 +23,12 @@
 
         </div>
 
-        <!-- Login Box -->
+        <!-- Verification Box -->
         <div class="form-container">
 
-            <form action="login_process.php" method="POST">
+            <form action="forget_password_process.php" method="POST">
+
+                <h2>Forget Password</h2>
 
                 <div class="input-group">
 
@@ -36,16 +38,16 @@
 
                 <div class="input-group">
 
-                    <input type="password" name="password" placeholder="Password" required>
+                    <input type="text" name="ic_number" placeholder="Identity Card Number" required>
 
                 </div>
 
-                <!-- Forget Password Function -->
+                <!-- Go Back to Login Page Function -->
                 <div class="forget-password">
 
-                    <a href="forget_password.php">
+                    <a href="login.php">
 
-                        Forget Password?
+                        Back to Login
 
                     </a>
 
@@ -54,7 +56,7 @@
                 <!-- Submit Button -->
                 <button type="submit" name="loginBtn">
 
-                    Login
+                    Verify
 
                 </button>
 

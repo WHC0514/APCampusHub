@@ -3,15 +3,18 @@
 session_start();
 require_once("../../config/db.php");
 
+/* Initial Attempts */
 if(!isset($_SESSION['login_attempts']))
 {
     $_SESSION['login_attempts'] = 0;
 }
 
+/* Initial Lock Timer */
 if(!isset($_SESSION['lock_time'])) {
     $_SESSION['lock_time'] = 0;
 }
 
+/* Check Cooldown for Lock Timer */
 if($_SESSION['lock_time'] > time())
 {
     $remaining = $_SESSION['lock_time'] - time();
@@ -30,6 +33,7 @@ if(isset($_POST['loginBtn']))
         exit();
     }
 
+    /* Get User Data */
     $sql = "SELECT * FROM user WHERE username = ?";
     $stmt = $conn->prepare($sql);
 
@@ -42,10 +46,13 @@ if(isset($_POST['loginBtn']))
 
     $result = $stmt->get_result();
 
+    /* User Found */
     if($result->num_rows == 1) {
         $user = $result->fetch_assoc();
 
+        /* Check Password */
         if(password_verify($password, $user['password'])) {
+            /* Reset Everything */    
             $_SESSION['login_attempts'] = 0;
             $_SESSION['lock_time'] = 0;
 
@@ -75,6 +82,7 @@ if(isset($_POST['loginBtn']))
                     exit();
             }
         } else {
+            /* Wrong Password */
             $_SESSION['login_attempts']++;
 
             if($_SESSION['login_attempts'] >= 3) {
@@ -91,6 +99,7 @@ if(isset($_POST['loginBtn']))
             exit();
         }
     } else {
+        /* User Not Found */
         $_SESSION['login_attempts']++;
 
         if($_SESSION['login_attempts'] >= 3) {
