@@ -41,6 +41,10 @@ body{
     object-fit: contain;
 }
 
+.search-container{
+    position: relative;
+}
+
 .search-bar{
     width: 350px;
     padding: 13px 18px;
@@ -51,10 +55,55 @@ body{
     outline: none;
 }
 
+.search-result{
+    position: absolute;
+    top: 55px;
+    left: 0;
+    width: 100%;
+    background: #1f1f1f;
+    border-radius: 10px;
+    overflow: hidden;
+    display: none;
+    z-index: 999;
+    border: 1px solid #333;
+}
+
+.search-item{
+    padding: 14px 18px;
+    transition: 0.3s;
+    color: white;
+}
+
+.search-item.clickable{
+    cursor: pointer;
+}
+
+.search-item.clickable:hover{
+    background: #2563eb;
+}
+
 .topbar-right{
     display: flex;
     align-items: center;
     gap: 40px;
+}
+
+.topbar-link{
+    text-decoration: none;
+}
+
+.topbar-link.active .topbar-item{
+    background: #2563eb;
+    padding: 10px 14px;
+    border-radius: 12px;
+}
+
+.topbar-link.active span{
+    color: white;
+}
+
+.topbar-link.active .topbar-icon{
+    filter: brightness(0) invert(1);
 }
 
 .topbar-item{
@@ -95,11 +144,23 @@ body{
     gap: 20px;
 }
 
+.profile-link{
+    display: inline-block;
+}
+
 .profile-pic{
     width: 90px;
     height: 90px;
     border-radius: 50%;
-    background: #444;
+    object-fit: cover;
+    border: 3px solid #2563eb;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.profile-pic:hover{
+    transform: scale(1.05);
+    opacity: 0.9;
 }
 
 .profile-info h2{

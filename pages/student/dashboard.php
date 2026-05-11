@@ -10,6 +10,38 @@ if(!isset($_SESSION['user_id']))
 
 $username = $_SESSION['username'];
 
+require_once("../../config/db.php");
+
+/* Default Profile Image */
+$profilePhoto = "../../uploads/profile_photo/default.png";
+
+$userID = $_SESSION['user_id'];
+
+/* Get Student Profile Photo */
+$sql = "SELECT profile_photo FROM student WHERE user_id = ?";
+
+$stmt = $conn->prepare($sql);
+
+if($stmt)
+{
+    $stmt->bind_param("i", $userID);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    if($result->num_rows == 1)
+    {
+        $row = $result->fetch_assoc();
+
+        if(!empty($row['profile_photo']))
+        {
+            $profilePhoto = $row['profile_photo'];
+        }
+    }
+
+    $stmt->close();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -30,43 +62,57 @@ $username = $_SESSION['username'];
 
             <img src="../../assets/images/app-logo.png" class="topbar-logo">
 
-            <input type="text" class="search-bar" placeholder="Search APCampusHub">
+            <div class="search-container">
+
+                <input type="text" class="search-bar" id="searchInput" placeholder="Search APCampusHub">
+
+                <div class="search-result" id="searchResult"></div>
+
+            </div>
 
         </div>
 
         <div class="topbar-right">
 
             <!-- Dashboard Button -->
-            <div class="topbar-item">
+            <a href="dashboard.php" class="topbar-link active">
+                <div class="topbar-item">
 
-                <img src="../../assets/icons/dashboard.png" alt="Dashboard" class="topbar-icon">
-                <span>Dashoboard</span>
+                    <img src="../../assets/icons/dashboard.png" alt="Dashboard" class="topbar-icon">
+                    <span>Dashboard</span>
             
-            </div>
-                
+                </div>
+            </a>
+
             <!-- Room Booking Button -->
-            <div class="topbar-item">
+            <a href="#" class="topbar-link">
+                <div class="topbar-item">
 
-                <img src="../../assets/icons/room-booking.png" alt="Room Booking" class="topbar-icon">
-                <span>Room Booking</span>
+                    <img src="../../assets/icons/room-booking.png" alt="Room Booking" class="topbar-icon">
+                    <span>Room Booking</span>
             
-            </div>
+                </div>
+            </a>
 
             <!-- Check In / Out Button -->
-            <div class="topbar-item">
+            <a href="#" class="topbar-link">
+                <div class="topbar-item">
 
-                <img src="../../assets/icons/check-in.png" alt="Check In" class="topbar-icon">
-                <span>Check In/Out</span>
+                    <img src="../../assets/icons/check-in.png" alt="Check In" class="topbar-icon">
+                    <span>Check In/Out</span>
 
-            </div>
+                </div>
+            </a>
 
             <!-- Events Button -->
-            <div class="topbar-item">
+            <a href="#" class="topbar-link">
+                <div class="topbar-item">
 
-                <img src="../../assets/icons/events.png" alt="Events" class="topbar-icon">
-                <span>Events</span>
+                    <img src="../../assets/icons/events.png" alt="Events" class="topbar-icon">
+                    <span>Events</span>
             
-            </div>
+                </div>
+            </a>
         </div>
     </div>
 
@@ -75,7 +121,15 @@ $username = $_SESSION['username'];
 
         <div class="profile-left">
 
-            <div class="profile-pic"></div>
+            <div class="profile-pic">
+
+                <a href="#" class="profile-link">
+
+                    <img src="../../uploads/profile_photo/<?php echo $profilePhoto; ?>" alt="Profile Picture" class="profile-pic">
+
+                </a>
+                
+            </div>
 
             <!-- User Info -->
             <div class="profile-info">
@@ -91,13 +145,21 @@ $username = $_SESSION['username'];
         <div class="profile-right">
 
             <!-- Settings -->
-            <img src="../../assets/icons/settings.png" alt="Settings" class="profile-action">
+            <a href="#">
+
+                <img src="../../assets/icons/settings.png" alt="Settings" class="profile-action">
+
+            </a>
 
             <!-- Notification -->
-            <img src="../../assets/icons/notifications.png" alt="Notification" class="profile-action">
+            <a href="#">
+
+                <img src="../../assets/icons/notifications.png" alt="Notification" class="profile-action">
+
+            </a>
 
             <!-- Logout -->
-            <a href="#">
+            <a href="../auth/logout.php">
 
                 <img src="../../assets/icons/logout.png" alt="Logout" class="profile-action">
 
@@ -143,8 +205,8 @@ $username = $_SESSION['username'];
                     <h3>Check In / Out</h3>
 
                     <p>
-                        Manage attendance, entry records,
-                        and activity tracking.
+                        Smart Check-In and Out,
+                        and request for assist easily.
                     </p>
 
                     <button class="primary-btn">
@@ -165,8 +227,8 @@ $username = $_SESSION['username'];
                     <h3>Campus Events</h3>
 
                     <p>
-                        Stay updated with university events,
-                        club activities, and announcements.
+                        Stay updated with events schedule,
+                        venue availability, and announcements.
                     </p>
 
                     <button class="primary-btn">
@@ -201,4 +263,88 @@ $username = $_SESSION['username'];
         </div>
     </div>
 </body>
+
+<script>
+
+/* Searchable Pages */
+const pages = [
+    {
+    name: "Dashboard",
+    link: "dashboard.php"
+    },
+    {
+    name: "My Account",
+    link: "#"
+    },
+    {
+    name: "Room Booking",
+    link: "#"
+    },
+    {
+    name: "Check In/Out",
+    link: "#"
+    },
+    {
+    name: "Events",
+    link: "#"
+    }
+];
+
+const searchInput = document.getElementById("searchInput");
+const searchResult = document.getElementById("searchResult");
+
+/* Live Search */
+searchInput.addEventListener("keyup", function(){
+    let input = searchInput.value.toLowerCase();
+    searchResult.innerHTML = "";
+
+    /* Empty Input */
+    if(input === "")
+    {
+        searchResult.style.display = "none";
+        return;
+    }
+
+    /* Filter Results */
+    let filtered = pages.filter(page => page.name.toLowerCase().includes(input));
+
+    /* No Result */
+    if(filtered.length === 0)
+    {
+        searchResult.innerHTML = 
+        `
+            <div class="search-item">
+                No result found
+            </div>
+        `;
+
+        searchResult.style.display = "block";
+        return;
+    }
+
+    /* Show Results */
+    filtered.forEach(page => {
+        searchResult.innerHTML +=
+        `
+            <div class="search-item clickable"
+                onclick="window.location.href='${page.link}'">
+
+                ${page.name}
+
+            </div>
+        `;
+    });
+
+    searchResult.style.display = "block";
+});
+
+/* Hide When Click Outside */
+document.addEventListener("click", function(e){
+    if(!document.querySelector(".search-container").contains(e.target))
+    {
+        searchResult.style.display = "none";
+    }
+});
+
+</script>
 </html>
