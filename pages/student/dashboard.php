@@ -28,7 +28,7 @@ $username = $_SESSION['username'];
 
         <div class="topbar-left">
 
-            <img src="../../assets/images/logo.png" class="topbar-logo">
+            <img src="../../assets/images/app-logo.png" class="topbar-logo">
 
             <input type="text" class="search-bar" placeholder="Search APCampusHub">
 
@@ -36,6 +36,14 @@ $username = $_SESSION['username'];
 
         <div class="topbar-right">
 
+            <!-- Dashboard Button -->
+            <div class="topbar-item">
+
+                <img src="../../assets/icons/dashboard.png" alt="Dashboard" class="topbar-icon">
+                <span>Dashoboard</span>
+            
+            </div>
+                
             <!-- Room Booking Button -->
             <div class="topbar-item">
 
@@ -47,7 +55,7 @@ $username = $_SESSION['username'];
             <!-- Check In / Out Button -->
             <div class="topbar-item">
 
-                <img src="../../assets/icons/checin.png" alt="Check In" class="topbar-icon">
+                <img src="../../assets/icons/check-in.png" alt="Check In" class="topbar-icon">
                 <span>Check In/Out</span>
 
             </div>
@@ -83,7 +91,7 @@ $username = $_SESSION['username'];
         <div class="profile-right">
 
             <!-- Settings -->
-            <img src="../../assets/icons/settigns.png" alt="Settings" class="profile-action">
+            <img src="../../assets/icons/settings.png" alt="Settings" class="profile-action">
 
             <!-- Notification -->
             <img src="../../assets/icons/notifications.png" alt="Notification" class="profile-action">
