@@ -123,7 +123,7 @@ if($stmt)
 
             <div class="profile-pic">
 
-                <a href="#" class="profile-link">
+                <a href="../profile/profile.php" class="profile-link">
 
                     <img src="../../uploads/profile_photo/<?php echo $profilePhoto; ?>" alt="Profile Picture" class="profile-pic">
 

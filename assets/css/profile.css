@@ -1,0 +1,164 @@
+.profile-topbar{
+    justify-content: flex-start;
+}
+
+.profile-topbar-left{
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.back-btn{
+    width: 45px;
+    height: 45px;
+    background: #2563eb;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+}
+
+.back-btn:hover{
+    background: #1e40af;
+    transform: scale(1.05);
+}
+
+.back-icon{
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+}
+
+.profile-page{
+    display: flex;
+    gap: 40px;
+    padding: 40px;
+    color: white;
+}
+
+.profile-page-left{
+    width: 35%;
+    background: #1a1a1a;
+    border-radius: 18px;
+    padding: 35px;
+    text-align: center;
+}
+
+.profile-page-pic{
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #2563eb;
+    margin-bottom: 20px;
+}
+
+.profile-page-left h1{
+    margin-bottom: 10px;
+}
+
+.username-text{
+    color: #aaa;
+    margin-bottom: 30px;
+}
+
+.id-card-container{
+    perspective: 1000px;
+    margin-top: 30px;
+}
+
+.id-card{
+    width: 100%;
+    height: 260px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.8s;
+    cursor: pointer;
+}
+
+.id-card.flipped{
+    transform: rotateY(180deg);
+}
+
+.id-card-front,
+.id-card-back{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 18px;
+    padding: 25px;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.id-card-front{
+    background: linear-gradient(to right, #2563eb, #1e40af);
+}
+
+.id-card-back{
+    background: linear-gradient(to right, #4b4b4b, #2f2f2f);
+    transform: rotateY(180deg);
+}
+
+.id-card-logo{
+    width: 70px;
+    margin-bottom: 15px;
+}
+
+.university-logo{
+    width: 250px;
+    height: 100px;
+    margin-bottom: 20px;
+}
+
+.profile-page-right{
+    flex: 1;
+    background: #1a1a1a;
+    border-radius: 18px;
+    padding: 35px;
+}
+
+.info-box{
+    margin-bottom: 30px;
+}
+
+.info-box label{
+    display: block;
+    margin-bottom: 10px;
+    color: #888;
+    font-size: 15px;
+}
+
+.info-box p{
+    font-size: 18px;
+}
+
+.change-password-btn{
+    display: inline-block;
+    margin-top: 20px;
+    padding: 14px 22px;
+    background: #2563eb;
+    border-radius: 10px;
+    text-decoration: none;
+    color: white;
+    transition: 0.3s;
+}
+
+.change-password-btn:hover{
+    background: #1e40af;
+}
+
+@media(max-width: 900px){
+    .profile-page{
+        flex-direction: column;
+    }
+
+    .profile-page-left{
+        width: 100%;
+    }
+}
