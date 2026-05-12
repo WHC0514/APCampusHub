@@ -85,7 +85,7 @@ if($stmt)
             </a>
 
             <!-- Room Booking Button -->
-            <a href="#" class="topbar-link">
+            <a href="room_booking.php" class="topbar-link">
                 <div class="topbar-item">
 
                     <img src="../../assets/icons/room-booking.png" alt="Room Booking" class="topbar-icon">

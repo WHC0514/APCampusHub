@@ -17,6 +17,7 @@
 body{
     background: var(--dark-bg);
     color: var(--white-text);
+    padding-top: 105px;
 }
 
 .topbar{
@@ -27,6 +28,11 @@ body{
     justify-content: space-between;
     align-items: center;
     padding: 0 35px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    border-bottom: 1px solid #333;
 }
 
 .topbar-left{

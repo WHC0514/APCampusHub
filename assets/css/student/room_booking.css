@@ -1,0 +1,138 @@
+.room-filter-section{
+    width: 100%;
+    padding: 25px 40px;
+    background: #1b1b1b;
+    border-bottom: 1px solid #2a2a2a;
+}
+
+.room-filter-section form{
+    display: flex;
+    gap: 15px;
+}
+
+.filter-select{
+    width: 250px;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: #2b2b2b;
+    color: white;
+    font-size: 15px;
+}
+
+.filter-select:focus{
+    outline: none;
+}
+
+.filter-btn{
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #2563eb;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.filter-btn:hover{
+    background: #1d4ed8;
+}
+
+.room-content{
+    width: 100%;
+    padding: 40px;
+}
+
+.room-grid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.room-card{
+    background: #1f1f1f;
+    border-radius: 18px;
+    overflow: hidden;
+    transition: 0.3s;
+    border: 1px solid #2a2a2a;
+    width: 100%;
+    max-width: 420px;
+}
+
+.room-card:hover{
+    transform: translateY(-5px);
+}
+
+.room-image{
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+}
+
+.room-info{
+    padding: 20px;
+}
+
+.room-info h2{
+    color: white;
+    margin-bottom: 10px;
+}
+
+.room-badge{
+    display: inline-block;
+    background: #2563eb;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 30px;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+.room-location,
+.room-capacity,
+.room-description{
+    color: #cfcfcf;
+    margin-bottom: 12px;
+    line-height: 1.6;
+}
+
+.room-btn-group{
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.view-btn,
+.book-btn{
+    flex: 1;
+    text-align: center;
+    padding: 12px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.view-btn{
+    background: #2b2b2b;
+    color: white;
+}
+
+.view-btn:hover{
+    background: #3b3b3b;
+}
+
+.book-btn{
+    background: #2563eb;
+    color: white;
+}
+
+.book-btn:hover{
+    background: #1d4ed8;
+}
+
+.no-room{
+    color: white;
+    font-size: 20px;
+    padding: 50px;
+}
