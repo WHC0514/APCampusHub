@@ -155,7 +155,7 @@ if(!empty($user['profile_photo']))
             </div>
 
             <!-- Change Password -->
-            <a href="#" class="change-password-btn">
+            <a href="change_password.php" class="change-password-btn">
                 Change Password
             </a>
         </div>
