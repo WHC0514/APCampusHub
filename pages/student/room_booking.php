@@ -12,26 +12,71 @@ require_once("../../config/db.php");
 
 /* Room Filter */
 $filterType = "";
+$search = "";
 
 if(isset($_GET['room_type']))
 {
-    $filterType = $_GET['room_type'];
+    $filterType = trim($_GET['room_type']);
 }
 
-/* Get Room */
+if(isset($_GET['search']))
+{
+    $search = trim($_GET['search']);
+}
+
+/* SQL Base */
+$sqlRoom = "SELECT * FROM room WHERE status = 'Active'";
+
+$params = [];
+$types = "";
+
+/* Room Type Filter */
 if(!empty($filterType))
 {
-    $sqlRoom = "SELECT * FROM room WHERE room_type = ? AND status = 'Active'";
-    $stmtRoom = $conn->prepare($sqlRoom);
-    $stmtRoom->bind_param("s", $filterType);
-} else {
-    $sqlRoom = "SELECT * FROM room WHERE status = 'Active'";
-    $stmtRoom = $conn->prepare($sqlRoom);
+    $sqlRoom .= " AND room_type = ?";
+    $params[] = $filterType;
+    $types .= "s";
+}
+
+/* Search Filter */
+if(!empty($search))
+{
+    $sqlRoom .= " AND (room_name LIKE ? OR block LIKE ? OR room_number LIKE ? OR room_type LIKE ?)";
+
+    $searchLike = "%" . $search . "%";
+
+    for($i = 0; $i < 4; $i++)
+    {
+        $params[] = $searchLike;
+        $types .= "s";
+    }
+}
+
+$stmtRoom = $conn->prepare($sqlRoom);
+
+/* Bind Param Dynamically */
+if(!empty($params))
+{
+    $stmtRoom->bind_param($types, ...$params);
 }
 
 $stmtRoom->execute();
 $roomResult = $stmtRoom->get_result();
 
+/* ROOM SUGGESTION DATA (for JS dropdown) */
+$suggestionRooms = [];
+
+$suggestSql = "SELECT room_id, room_name, room_type, block, room_number 
+               FROM room 
+               WHERE status = 'Active'
+               LIMIT 20";
+
+$suggestResult = $conn->query($suggestSql);
+
+while($row = $suggestResult->fetch_assoc())
+{
+    $suggestionRooms[] = $row;
+}
 ?>
 
 <!DOCTYPE html>
@@ -109,55 +154,50 @@ $roomResult = $stmtRoom->get_result();
     <!-- Filter -->
     <div class="room-filter-section">
 
-        <form method="GET">
+        <form method="GET" class="filter-form">
 
-            <select name="room_type" class="filter-select">
+            <!-- Room Type -->
+            <select name="room_type" class="filter-select" onchange="this.form.submit()">
 
                 <option value="">All Rooms</option>
+
                 <option value="Discussion Room"
-                    <?php 
-                        if($filterType == "Discussion Room")
-                        {
-                            echo "selected";
-                        }
-                    ?>> Discussion Room</option>
+                    <?php if($filterType == "Discussion Room"){ echo "selected"; } ?>>
+                    Discussion Room
+                </option>
 
                 <option value="Presentation Room"
-                    <?php 
-                        if($filterType == "Presentation Room")
-                        {
-                            echo "selected";
-                        }
-                    ?>> Presentation Room</option>
+                    <?php if($filterType == "Presentation Room"){ echo "selected"; } ?>>
+                    Presentation Room
+                </option>
 
                 <option value="Auditorium"
-                    <?php 
-                        if($filterType == "Auditorium")
-                        {
-                            echo "selected";
-                        }
-                    ?>> Auditorium</option>
+                    <?php if($filterType == "Auditorium"){ echo "selected"; } ?>>
+                    Auditorium
+                </option>
 
                 <option value="Classroom"
-                    <?php 
-                        if($filterType == "Classroom")
-                        {
-                            echo "selected";
-                        }
-                    ?>> Classroom</option>
+                    <?php if($filterType == "Classroom"){ echo "selected"; } ?>>
+                    Classroom
+                </option>
 
                 <option value="Lab"
-                    <?php 
-                        if($filterType == "Lab")
-                        {
-                            echo "selected";
-                        }
-                    ?>> Lab</option>
+                    <?php if($filterType == "Lab"){ echo "selected"; } ?>>
+                    Lab
+                </option>
 
             </select>
 
-            <button type="submit" class="filter-btn">
-                Filter
+            <!-- Search -->
+            <div class="room-search-wrapper" style="position:relative;">
+
+                <input type="text" name="search" id="roomSearchInput" class="room-search" placeholder="Search room..." value="<?php echo htmlspecialchars($search); ?>" autocomplete="off">
+
+                <div id="roomSearchResult" class="room-search-result"></div>
+
+            </div>
+            <button type="submit" class="search-btn">
+                Search
             </button>
 
         </form>
@@ -233,7 +273,7 @@ $roomResult = $stmtRoom->get_result();
                         <!-- Buttons -->
                         <div class="room-btn-group">
 
-                            <a href="room_details.php?room_id=<?php echo $room['room_id']; ?>" class="view-btn">
+                            <a href="room_detail.php?room_id=<?php echo $room['room_id']; ?>" class="view-btn">
 
                                 View Details
 
@@ -266,4 +306,155 @@ $roomResult = $stmtRoom->get_result();
     </div>
 </div>
 </body>
+
+<!-- Search Bar for Topbar -->
+<script>
+
+/* Searchable Pages */
+const pages = [
+    {
+    name: "Dashboard",
+    link: "dashboard.php"
+    },
+    {
+    name: "My Account",
+    link: "#"
+    },
+    {
+    name: "Room Booking",
+    link: "room_booking.php"
+    },
+    {
+    name: "Check In/Out",
+    link: "#"
+    },
+    {
+    name: "Events",
+    link: "#"
+    }
+];
+
+const searchInput = document.getElementById("searchInput");
+const searchResult = document.getElementById("searchResult");
+
+/* Live Search */
+searchInput.addEventListener("keyup", function(){
+    let input = searchInput.value.toLowerCase();
+    searchResult.innerHTML = "";
+
+    /* Empty Input */
+    if(input === "")
+    {
+        searchResult.style.display = "none";
+        return;
+    }
+
+    /* Filter Results */
+    let filtered = pages.filter(page => page.name.toLowerCase().includes(input));
+
+    /* No Result */
+    if(filtered.length === 0)
+    {
+        searchResult.innerHTML = 
+        `
+            <div class="search-item">
+                No result found
+            </div>
+        `;
+
+        searchResult.style.display = "block";
+        return;
+    }
+
+    /* Show Results */
+    filtered.forEach(page => {
+        searchResult.innerHTML +=
+        `
+            <div class="search-item clickable"
+                onclick="window.location.href='${page.link}'">
+
+                ${page.name}
+
+            </div>
+        `;
+    });
+
+    searchResult.style.display = "block";
+});
+
+/* Hide When Click Outside */
+document.addEventListener("click", function(e){
+    if(!document.querySelector(".search-container").contains(e.target))
+    {
+        searchResult.style.display = "none";
+    }
+});
+</script>
+
+<!-- Search Bar For Room -->
+<script>
+
+const rooms = <?php echo json_encode($suggestionRooms); ?>;
+
+const input = document.getElementById("roomSearchInput");
+const box = document.getElementById("roomSearchResult");
+
+input.addEventListener("input", function(){
+
+    let value = this.value.toLowerCase().trim();
+    box.innerHTML = "";
+
+    if(value === "")
+    {
+        box.style.display = "none";
+        return;
+    }
+
+    let filtered = rooms.filter(r =>
+        r.room_name.toLowerCase().includes(value) ||
+        r.room_type.toLowerCase().includes(value) ||
+        r.block.toLowerCase().includes(value) ||
+        r.room_number.toString().includes(value)
+    ).slice(0,4); // ONLY 4 suggestions
+
+    if(filtered.length === 0)
+    {
+        box.innerHTML = `<div class="room-search-item">No room found</div>`;
+        box.style.display = "block";
+        return;
+    }
+
+    filtered.forEach(r => {
+
+        let label = `${r.room_name} (Block ${r.block} - Room ${r.room_number})`;
+
+        box.innerHTML += `
+            <div class="room-search-item"
+                 onclick="selectRoomSearch('${r.room_name}')">
+                ${label}
+            </div>
+        `;
+    });
+
+    box.style.display = "block";
+});
+
+/* Click Suggestion */
+function selectRoomSearch(value)
+{
+    input.value = value;
+    box.style.display = "none";
+    input.form.submit();
+}
+
+/* Hide On Outside Click */
+document.addEventListener("click", function(e){
+    if(!document.querySelector(".room-search-wrapper").contains(e.target))
+    {
+        box.style.display = "none";
+    }
+});
+
+</script>
+
 </html>

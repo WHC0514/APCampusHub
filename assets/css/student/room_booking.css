@@ -24,7 +24,25 @@
     outline: none;
 }
 
-.filter-btn{
+.filter-form{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.room-search{
+    width: 280px;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 10px;
+    background: #1f1f1f;
+    color: white;
+    outline: none;
+    font-size: 15px;
+}
+
+.search-btn{
     padding: 12px 20px;
     border: none;
     border-radius: 10px;
@@ -34,7 +52,7 @@
     transition: 0.3s;
 }
 
-.filter-btn:hover{
+.search-btn:hover{
     background: #1d4ed8;
 }
 
@@ -135,4 +153,46 @@
     color: white;
     font-size: 20px;
     padding: 50px;
+}
+
+.room-search-result{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    background:#1f1f1f;
+    border:1px solid #2a2a2a;
+    border-top:none;
+    z-index:999;
+    display:none;
+    max-height:200px;
+    overflow-y:auto;
+    border-radius: 0 0 10px 10px;
+}
+
+.room-search-result::-webkit-scrollbar{
+    width: 6px;
+}
+
+.room-search-result::-webkit-scrollbar-thumb{
+    background: #444;
+    border-radius: 10px;
+}
+
+.room-search-item{
+    padding: 12px 14px;
+    cursor: pointer;
+    border-bottom: 1px solid #2a2a2a;
+    color: #e5e5e5;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.room-search-item:hover{
+    background: #2b2b2b;
+    color: #ffffff;
+}
+
+.room-search-item:last-child{
+    border-bottom: none;
 }

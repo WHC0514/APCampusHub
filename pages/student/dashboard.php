@@ -186,7 +186,7 @@ if($stmt)
                         and presentation rooms anytime.
                     </p>
 
-                    <button class="primary-btn">
+                    <button class="primary-btn" onclick="location.href='room_booking.php'">
 
                         Open
 
@@ -209,7 +209,7 @@ if($stmt)
                         and request for assist easily.
                     </p>
 
-                    <button class="primary-btn">
+                    <button class="primary-btn" onclick="location.href='#'">
 
                         Open
 
@@ -231,7 +231,7 @@ if($stmt)
                         venue availability, and announcements.
                     </p>
 
-                    <button class="primary-btn">
+                    <button class="primary-btn" onclick="location.href='#'">
 
                         Explore
 
@@ -253,7 +253,7 @@ if($stmt)
                         and available resources.
                     </p>
 
-                    <button class="primary-btn">
+                    <button class="primary-btn" onclick="location.href='#'">
 
                         View More
 
@@ -278,7 +278,7 @@ const pages = [
     },
     {
     name: "Room Booking",
-    link: "#"
+    link: "room_booking.php"
     },
     {
     name: "Check In/Out",
