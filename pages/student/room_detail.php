@@ -243,7 +243,7 @@ if($currentPointer >= $dayEnd)
             </p>
 
             <!-- Date Picker -->
-            <form method="GET">
+            <form method="GET" id="dataForm">
 
                 <input type="hidden"
                        name="room_id"
@@ -253,10 +253,10 @@ if($currentPointer >= $dayEnd)
 
                 <input type="date"
                        name="date"
+                       id="datePicker"
                        value="<?php echo $selectedDate; ?>"
-                       class="date-picker"
-                       onchange="this.form.submit()">
-
+                       min="<?php echo date('Y-m-d'); ?>"
+                       class="date-picker">
             </form>
 
             <!-- Booked Slot -->
@@ -339,6 +339,35 @@ function changeImage(el)
     // Set Active
     el.classList.add("active");
 }
+
+const datePicker    = document.getElementById("datePicker");
+const todayStr      = "<?php echo date('Y-m-d'); ?>";
+let dateEnterPressed = false;
+
+function submitDate() {
+    if(datePicker.value < todayStr) {
+        datePicker.value = todayStr;
+    }
+    if(datePicker.value) {
+        document.getElementById("dataForm").submit();
+    }
+}
+
+datePicker.addEventListener("keydown", function(e) {
+    if(e.key === "Enter") {
+        e.preventDefault();
+        dateEnterPressed = true;
+        submitDate();
+    }
+});
+
+datePicker.addEventListener("blur", function() {
+    if(dateEnterPressed) {
+        dateEnterPressed = false;
+        return;
+    }
+    submitDate();
+});
 </script>
 
 </html>
