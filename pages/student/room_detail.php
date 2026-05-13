@@ -2,7 +2,7 @@
 
 session_start();
 
-/* Set Timezone */
+/* Set timezone */
 date_default_timezone_set("Asia/Kuala_Lumpur");
 
 if(!isset($_SESSION['user_id']))
@@ -13,7 +13,7 @@ if(!isset($_SESSION['user_id']))
 
 require_once("../../config/db.php");
 
-/* Check The Room ID */
+/* Check the room ID */
 if(!isset($_GET['room_id']))
 {
     header("Location: room_booking.php");
@@ -22,7 +22,7 @@ if(!isset($_GET['room_id']))
 
 $roomID = $_GET['room_id'];
 
-/* Selected Date */
+/* Selected date */
 $selectedDate = date("Y-m-d");
 
 if(isset($_GET['date']))
@@ -30,7 +30,7 @@ if(isset($_GET['date']))
     $selectedDate = $_GET['date'];
 }
 
-/* Get Room Info */
+/* Get room info */
 $sqlRoom = "SELECT * FROM room WHERE room_id = ?";
 $stmtRoom = $conn->prepare($sqlRoom);
 $stmtRoom->bind_param("i", $roomID);
@@ -45,10 +45,10 @@ if($roomResult->num_rows == 0)
 
 $room = $roomResult->fetch_assoc();
 
-/* Room Default Image */
+/* Room default image */
 $mainImage = "../../uploads/room/default-room.jpg";
 
-/* Get Room Cover Photo From Database */
+/* Get room cover photo from database */
 if(!empty($room['cover_image']))
 {
     $mainImage = "../../uploads/room/" . $room['cover_image'];
@@ -60,7 +60,7 @@ $stmtImages->bind_param("i", $roomID);
 $stmtImages->execute();
 $imagesResult = $stmtImages->get_result();
 
-/* Get Bookings Data For the Room */
+/* Get bookings data for the room */
 $sqlBooking = "SELECT start_time, end_time FROM room_booking WHERE room_id = ? AND booking_date = ? AND booking_status = 'Approved' ORDER BY start_time ASC";
 
 $stmtBooking = $conn->prepare($sqlBooking);
@@ -76,13 +76,13 @@ while($row = $bookingResult->fetch_assoc())
     $bookings[] = $row;
 }
 
-/* Operating Hours */
+/* Operating hours */
 $dayStart = strtotime($selectedDate . " 08:00:00");
 $dayEnd   = strtotime($selectedDate . " 22:00:00");
 
 $today = date("Y-m-d");
 
-/* Current Time */
+/* Current time */
 if($selectedDate == $today)
 {
     $nowTime = strtotime(date("Y-m-d H:i"));
@@ -99,26 +99,26 @@ if($selectedDate == $today)
 
 $nextAvailable = null;
 
-/* Find the Next Available Slot */
+/* Find the next available slot */
 foreach($bookings as $b)
 {
     $start = strtotime($selectedDate . " " . $b['start_time']);
     $end   = strtotime($selectedDate . " " . $b['end_time']);
 
-    /* Skip Ended Booking */
+    /* Skip ended booking */
     if($end <= $currentPointer)
     {
         continue;
     }
 
-    /* Current Time is Inside Booking */
+    /* Current time is inside booking */
     if($currentPointer >= $start && $currentPointer < $end)
     {
         $currentPointer = $end;
         continue;
     }
 
-    /* Found Free Slot */
+    /* Found free slot */
     if($currentPointer < $start)
     {
         $nextAvailable = [
@@ -130,7 +130,7 @@ foreach($bookings as $b)
     }
 }
 
-/* After Last Booking */
+/* After last booking */
 if(!$nextAvailable)
 {
     if($currentPointer < $dayEnd)
@@ -142,7 +142,7 @@ if(!$nextAvailable)
     }
 }
 
-/* No SLot Left */
+/* No slot left */
 if($currentPointer >= $dayEnd)
 {
     $nextAvailable = null;
@@ -328,15 +328,15 @@ function changeImage(el)
 {
     const main = document.getElementById("mainImage");
 
-    // ChangeMain Image
+    // Change main image
     main.src = el.src;
 
-    // Remove Active from All Thumbnails
+    // Remove active from all thumbnails
     document.querySelectorAll(".thumb").forEach(t => {
         t.classList.remove("active");
     });
 
-    // Set Active
+    // Set active
     el.classList.add("active");
 }
 

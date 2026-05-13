@@ -10,7 +10,7 @@ if(!isset($_SESSION['user_id']))
 
 require_once("../../config/db.php");
 
-/* Room Filter */
+/* Room filter */
 $filterType = "";
 $search = "";
 
@@ -30,7 +30,7 @@ $sqlRoom = "SELECT * FROM room WHERE status = 'Active'";
 $params = [];
 $types = "";
 
-/* Room Type Filter */
+/* Room type filter */
 if(!empty($filterType))
 {
     $sqlRoom .= " AND room_type = ?";
@@ -38,7 +38,7 @@ if(!empty($filterType))
     $types .= "s";
 }
 
-/* Search Filter */
+/* Search filter */
 if(!empty($search))
 {
     $sqlRoom .= " AND (room_name LIKE ? OR block LIKE ? OR room_number LIKE ? OR room_type LIKE ?)";
@@ -54,7 +54,7 @@ if(!empty($search))
 
 $stmtRoom = $conn->prepare($sqlRoom);
 
-/* Bind Param Dynamically */
+/* Bind param dynamically */
 if(!empty($params))
 {
     $stmtRoom->bind_param($types, ...$params);
@@ -63,7 +63,6 @@ if(!empty($params))
 $stmtRoom->execute();
 $roomResult = $stmtRoom->get_result();
 
-/* ROOM SUGGESTION DATA (for JS dropdown) */
 $suggestionRooms = [];
 
 $suggestSql = "SELECT room_id, room_name, room_type, block, room_number 
@@ -200,6 +199,11 @@ while($row = $suggestResult->fetch_assoc())
                 Search
             </button>
 
+            <!-- My Bookings Button -->
+            <a href="my_bookings.php" class="my-bookings-btn">
+                My Bookings
+            </a>
+
         </form>
     </div>
 
@@ -310,7 +314,7 @@ while($row = $suggestResult->fetch_assoc())
 <!-- Search Bar for Topbar -->
 <script>
 
-/* Searchable Pages */
+/* Searchable pages */
 const pages = [
     {
     name: "Dashboard",
@@ -318,7 +322,7 @@ const pages = [
     },
     {
     name: "My Account",
-    link: "#"
+    link: "../profile/profile.php"
     },
     {
     name: "Room Booking",
@@ -337,22 +341,22 @@ const pages = [
 const searchInput = document.getElementById("searchInput");
 const searchResult = document.getElementById("searchResult");
 
-/* Live Search */
+/* Live search */
 searchInput.addEventListener("keyup", function(){
     let input = searchInput.value.toLowerCase();
     searchResult.innerHTML = "";
 
-    /* Empty Input */
+    /* Empty input */
     if(input === "")
     {
         searchResult.style.display = "none";
         return;
     }
 
-    /* Filter Results */
+    /* Filter results */
     let filtered = pages.filter(page => page.name.toLowerCase().includes(input));
 
-    /* No Result */
+    /* No result */
     if(filtered.length === 0)
     {
         searchResult.innerHTML = 
@@ -366,7 +370,7 @@ searchInput.addEventListener("keyup", function(){
         return;
     }
 
-    /* Show Results */
+    /* Show results */
     filtered.forEach(page => {
         searchResult.innerHTML +=
         `
@@ -382,7 +386,7 @@ searchInput.addEventListener("keyup", function(){
     searchResult.style.display = "block";
 });
 
-/* Hide When Click Outside */
+/* Hide when click outside */
 document.addEventListener("click", function(e){
     if(!document.querySelector(".search-container").contains(e.target))
     {
@@ -391,7 +395,7 @@ document.addEventListener("click", function(e){
 });
 </script>
 
-<!-- Search Bar For Room -->
+<!-- Search bar for room -->
 <script>
 
 const rooms = <?php echo json_encode($suggestionRooms); ?>;
@@ -439,7 +443,7 @@ input.addEventListener("input", function(){
     box.style.display = "block";
 });
 
-/* Click Suggestion */
+/* Click suggestion */
 function selectRoomSearch(value)
 {
     input.value = value;
@@ -447,7 +451,7 @@ function selectRoomSearch(value)
     input.form.submit();
 }
 
-/* Hide On Outside Click */
+/* Hide on outside click */
 document.addEventListener("click", function(e){
     if(!document.querySelector(".room-search-wrapper").contains(e.target))
     {

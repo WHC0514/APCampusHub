@@ -63,7 +63,7 @@ if($result['conflicts'] > 0) {
     die("This time slot has already been booked. Please go back and choose another time.");
 }
 
-// Insert Booking
+// Insert booking
 
 $stmt = $conn->prepare("INSERT INTO room_booking (room_id, user_id, booking_date, start_time, end_time) VALUES (?, ?, ?, ?, ?)");
 $stmt->bind_param("iisss", $roomID, $userID, $date, $startTime, $endTime);

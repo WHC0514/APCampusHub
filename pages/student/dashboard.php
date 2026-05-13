@@ -12,12 +12,12 @@ $username = $_SESSION['username'];
 
 require_once("../../config/db.php");
 
-/* Default Profile Image */
+/* Default profile image */
 $profilePhoto = "../../uploads/profile_photo/default.png";
 
 $userID = $_SESSION['user_id'];
 
-/* Get Student Profile Photo */
+/* Get student profile photo */
 $sql = "SELECT profile_photo FROM student WHERE user_id = ?";
 
 $stmt = $conn->prepare($sql);
@@ -266,7 +266,7 @@ if($stmt)
 
 <script>
 
-/* Searchable Pages */
+/* Searchable pages */
 const pages = [
     {
     name: "Dashboard",
@@ -274,7 +274,7 @@ const pages = [
     },
     {
     name: "My Account",
-    link: "#"
+    link: "../profile/profile.php"
     },
     {
     name: "Room Booking",
@@ -293,22 +293,22 @@ const pages = [
 const searchInput = document.getElementById("searchInput");
 const searchResult = document.getElementById("searchResult");
 
-/* Live Search */
+/* Live search */
 searchInput.addEventListener("keyup", function(){
     let input = searchInput.value.toLowerCase();
     searchResult.innerHTML = "";
 
-    /* Empty Input */
+    /* Empty input */
     if(input === "")
     {
         searchResult.style.display = "none";
         return;
     }
 
-    /* Filter Results */
+    /* Filter results */
     let filtered = pages.filter(page => page.name.toLowerCase().includes(input));
 
-    /* No Result */
+    /* No result */
     if(filtered.length === 0)
     {
         searchResult.innerHTML = 
@@ -322,7 +322,7 @@ searchInput.addEventListener("keyup", function(){
         return;
     }
 
-    /* Show Results */
+    /* Show results */
     filtered.forEach(page => {
         searchResult.innerHTML +=
         `
@@ -338,7 +338,7 @@ searchInput.addEventListener("keyup", function(){
     searchResult.style.display = "block";
 });
 
-/* Hide When Click Outside */
+/* Hide when click outside */
 document.addEventListener("click", function(e){
     if(!document.querySelector(".search-container").contains(e.target))
     {
