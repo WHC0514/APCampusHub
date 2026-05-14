@@ -12,6 +12,24 @@ require_once("../../config/db.php");
 
 $userID = $_SESSION['user_id'];
 
+if(isset($_POST['cancel_booking_id'])) {
+    $cancelID = intval($_POST['cancel_booking_id']);
+
+    // Make sure the booking belongs to this user before cancelling
+    $stmtCancel = $conn->prepare("
+        UPDATE room_booking
+        SET booking_status = 'Canceled'
+        WHERE booking_id = ?
+        AND user_id = ?
+        AND booking_status = 'Approved'
+    ");
+    $stmtCancel->bind_param("ii", $cancelID, $userID);
+    $stmtCancel->execute();
+
+    header("Location: my_bookings.php");
+    exit();
+}
+
 /* Show upcoming bookings only */
 $stmtUpcoming = $conn->prepare("
     SELECT rb.*, 
@@ -159,6 +177,10 @@ $historyResult = $stmtHistory->get_result();
 
                         </div>
 
+                        <button class="cancel-btn" onclick="event.stopPropagation(); confirmCancel(<?php echo $b['booking_id']; ?>)">
+                            <img src="../../assets/icons/delete.png" alt="Cancel">
+                        </button>
+
                     </div>
 
                 <?php endwhile; ?>
@@ -269,6 +291,25 @@ $historyResult = $stmtHistory->get_result();
 
 </div>
 
+<!-- CANCEL CONFIRMATION MODAL -->
+<div id="cancelModal" class="modal-overlay">
+    <div class="modal-box">
+        <h3>Cancel Booking?</h3>
+        <p>Are you sure you want to cancel this booking? This cannot be undone.</p>
+        <div class="modal-actions">
+            <button class="modal-btn btn-no" onclick="closeModal()">
+                No, Keep It
+            </button>
+            <form method="POST" id="cancelForm">
+                <input type="hidden" name="cancel_booking_id" id="cancelBookingId">
+                <button type="submit" class="modal-btn btn-yes">
+                    Yes, Cancel
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
 function switchTab(tab, btn) {
 
@@ -283,6 +324,20 @@ function switchTab(tab, btn) {
 
     btn.classList.add('active');
 }
+
+function confirmCancel(bookingId) {
+    document.getElementById("cancelBookingId").value = bookingId;
+    document.getElementById("cancelModal").classList.add("active");
+}
+
+function closeModal() {
+    document.getElementById("cancelModal").classList.remove("active");
+}
+
+// Close modal if user clicks outside the box
+document.getElementById("cancelModal").addEventListener("click", function(e) {
+    if(e.target === this) closeModal();
+});
 </script>
 
 </body>

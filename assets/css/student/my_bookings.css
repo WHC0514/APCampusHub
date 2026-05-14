@@ -82,6 +82,7 @@ body {
     border-radius: 18px;
 
     padding: 14px;
+    position: relative;
 
     box-shadow:
         0 4px 16px rgba(0,0,0,0.25);
@@ -222,6 +223,123 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
     background: #3b4250;
+}
+
+.cancel-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+}
+
+.cancel-btn img {
+    width: 20px;
+    height: 20px;
+}
+
+.cancel-btn:hover {
+    background: #1e40af;
+}
+
+/* Modal */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.25s ease;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-box {
+    background: linear-gradient(to bottom right, #1f1f1f, #171717);
+    border-radius: 14px;
+    padding: 28px 24px;
+    max-width: 340px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.03);
+    animation: modalPop 0.25 ease;
+}
+
+.modal-box h3 {
+    margin: 0 0 10px;
+    font-size: 24px;
+}
+
+.modal-box p {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.modal-btn {
+    padding: 8px 20px;
+    border-radius: 8px;
+    border: none;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-no {
+    background: #2b2b2b;
+    color: white;
+    border: 1px solid #3a3a3a;
+}
+
+.btn-no:hover {
+    background: #383838;
+    transform: translateY(-2px);
+}
+
+.btn-yes {
+    background: linear-gradient(to right, #dc2626, #b91c1c);
+    color: white;
+}
+
+.btn-yes:hover {
+    background: linear-gradient(to right, #ef4444, #dc2626);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(220,38,38,0.3);
+}
+
+@keyframes modalPop{
+    from{
+        opacity: 0;
+        transform: scale(0.9) translateY(10px);
+    }
+
+    to{
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes fadeIn{
+    from{
+        opacity: 0;
+    }
+
+    to{
+        opacity: 1;
+    }
 }
 
 @media (max-width: 480px) {
