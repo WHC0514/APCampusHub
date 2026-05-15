@@ -2,14 +2,21 @@
 session_start();
 date_default_timezone_set("Asia/Kuala_Lumpur");
 
-if(!isset($_SESSION['user_id'])) {
+if(!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || !in_array($_SESSION['role'], ["student", "lecturer"]))
+{
     header("Location: ../auth/login.php");
     exit();
 }
 
+$role = $_SESSION['role'] ?? 'student';
+
+$room_booking = ($role === "lecturer")
+    ? "../lecturer/room_booking.php"
+    : "../student/room_booking.php";
+
 require_once("../../config/db.php");
 
-// VALIDATE INCOMING DATA
+// Validate incoming data
 
 $userID    = $_SESSION['user_id'];
 $roomID    = intval($_POST['room_id']    ?? 0);
@@ -72,7 +79,7 @@ if($stmt->execute()) {
 ?>
 <script>
     alert("Booking successful!");
-    window.location.href = "room_booking.php";
+    window.location.href = "<?php echo $room_booking; ?>";
 </script>
 <?php
     exit();

@@ -6,9 +6,33 @@ require_once("../../config/db.php");
 
 date_default_timezone_set("Asia/Kuala_Lumpur");
 
+$role = $_SESSION['role'] ?? 'student';
+
+$dashboard = ($role === "lecturer")
+    ? "../lecturer/dashboard.php"
+    : "../student/dashboard.php";
+
+function fail($msg)
+{
+    $role = $_SESSION['role'] ?? 'student';
+
+    if($role === "lecturer") {
+        $redirect = "../lecturer/dashboard.php";
+    } else {
+        $redirect = "../student/dashboard.php";
+    }
+
+    echo "<script>
+        alert('$msg');
+        window.location.href = '$redirect';
+    </script>";
+
+    exit();
+}
+
 if(!isset($_GET['booking_id']))
 {
-    die("Missing booking");
+    fail("Missing booking");
 }
 
 $userID = $_SESSION['user_id'];
@@ -36,7 +60,7 @@ $result = $stmt->get_result();
 
 if($result->num_rows == 0)
 {
-    die("Invalid session");
+    fail("Invalid session");
 }
 
 $booking = $result->fetch_assoc();
@@ -102,6 +126,46 @@ if($iotResult->num_rows > 0)
     $acTemperature =
     $iot['ac_temperature'];
 }
+
+$serviceStatus = null;
+$requestType = null;
+
+$progress = 0;
+$progressLabel = "";
+
+/* Get all requests */
+$sqlReq = "SELECT status, request_type, created_at FROM room_service_request
+WHERE booking_id = ? ORDER BY created_at DESC";
+
+$stmtReq = $conn->prepare($sqlReq);
+$stmtReq->bind_param("i", $bookingID);
+$stmtReq->execute();
+
+$resReq = $stmtReq->get_result();
+
+/* Store all requests */
+$requests = [];
+
+while($row = $resReq->fetch_assoc()) {
+    $requests[] = $row;
+}
+
+$reports = [];
+
+/* Get all reports */
+$sqlReport = "SELECT issue_type, severity, status, created_at FROM room_issue_report
+WHERE booking_id = ? ORDER BY created_at DESC";
+
+$stmtReport = $conn->prepare($sqlReport);
+$stmtReport->bind_param("i", $bookingID);
+$stmtReport->execute();
+
+$resReport = $stmtReport->get_result();
+
+while($row = $resReport->fetch_assoc()) {
+    $reports[] = $row;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -124,7 +188,7 @@ if($iotResult->num_rows > 0)
         <div class="profile-topbar-left">
 
             <!-- Back Button -->
-            <a href="../student/dashboard.php" class="back-btn">
+            <a href="<?php echo $dashboard; ?>" class="back-btn">
 
                 <img src="../../assets/icons/back.png" class="back-icon">
 
@@ -337,9 +401,9 @@ if($iotResult->num_rows > 0)
 
                 <div class="support-btn-group">
 
-                    <a href="request_help.php?booking_id=<?php echo $bookingID; ?>" class="btn blue">
+                    <a href="room_service.php?booking_id=<?php echo $bookingID; ?>" class="btn blue">
 
-                        Request Assist
+                        Request Support
 
                     </a>
 
@@ -354,6 +418,110 @@ if($iotResult->num_rows > 0)
             </div>
 
         </div>
+
+        <?php if(!empty($requests) || !empty($reports)): ?>
+
+            <div class="request-history">
+
+                <h3>Support & Report History</h3>
+
+                <!-- Service Request -->
+                <?php if(!empty($requests)): ?>
+
+                    <div class="history-section-title">
+                        Service Requests
+                    </div>
+
+                    <?php foreach($requests as $req): ?>
+
+                        <?php
+                            $reqProgress = 20;
+
+                            if($req['status'] === "In Progress") {
+                                $reqProgress = 50;
+                            }
+                            elseif($req['status'] === "Done") {
+                                $reqProgress = 100;
+                            }
+                        ?>
+
+                        <div class="history-card">
+
+                            <div class="history-top">
+
+                                <div class="req-left">
+                                    <?php echo $req['request_type']; ?>
+                                </div>
+
+                                <div class="req-right status-<?php echo strtolower(str_replace(' ', '-', $req['status'])); ?>">
+                                    <?php echo $req['status']; ?>
+                                </div>
+
+                            </div>
+
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: <?php echo $reqProgress; ?>%;"></div>
+                            </div>
+
+                        </div>
+
+                    <?php endforeach; ?>
+
+                <?php endif; ?>
+
+                <!-- Issue Report -->
+                <?php if(!empty($reports)): ?>
+
+                    <div class="history-section-title">
+                        Issue Reports
+                    </div>
+
+                    <?php foreach($reports as $report): ?>
+
+                        <?php
+                            $reportProgress = 20;
+
+                            if($report['status'] === "In Progress") {
+                                $reportProgress = 50;
+                            }
+                            elseif($report['status'] === "Resolved") {
+                                $reportProgress = 100;
+                            }
+                        ?>
+
+                        <div class="history-card">
+
+                            <div class="history-top">
+
+                                <div class="req-left">
+
+                                    <?php echo $report['issue_type']; ?>
+
+                                    <span class="severity-badge severity-<?php echo strtolower($report['severity']); ?>">
+                                        <?php echo $report['severity']; ?>
+                                    </span>
+
+                                </div>
+
+                                <div class="req-right status-<?php echo strtolower(str_replace(' ', '-', $report['status'])); ?>">
+                                    <?php echo $report['status']; ?>
+                                </div>
+
+                            </div>
+
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: <?php echo $reportProgress; ?>%;"></div>
+                            </div>
+
+                        </div>
+
+                    <?php endforeach; ?>
+
+                <?php endif; ?>
+
+            </div>
+
+        <?php endif; ?>
 
     </div>
 
@@ -481,7 +649,7 @@ function autoCheckout() {
         `;
 
         setTimeout(() => {
-            window.location.href = "../student/dashboard.php?session_ended=1";
+            window.location.href = "<?php echo $dashboard; ?>?session_ended=1";
         }, 4000);
     });
 }
@@ -511,7 +679,7 @@ function manualCheckout()
     .then(res => res.text())
     .then(data =>
     {
-        window.location.href ="../student/dashboard.php?checkout_success=1";
+        window.location.href ="<?php echo $dashboard; ?>?checkout_success=1";
     });
 }
 

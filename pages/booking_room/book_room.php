@@ -2,15 +2,34 @@
 session_start();
 date_default_timezone_set("Asia/Kuala_Lumpur");
 
-if(!isset($_SESSION['user_id'])) {
+if(!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || !in_array($_SESSION['role'], ["student", "lecturer"]))
+{
     header("Location: ../auth/login.php");
+    exit();
+}
+
+function fail($msg)
+{
+    $role = $_SESSION['role'] ?? 'student';
+
+    if($role === "lecturer") {
+        $redirect = "../lecturer/room_booking.php";
+    } else {
+        $redirect = "../student/room_booking.php";
+    }
+
+    echo "<script>
+        alert('$msg');
+        window.location.href = '$redirect';
+    </script>";
+
     exit();
 }
 
 require_once("../../config/db.php");
 
 if(!isset($_GET['room_id'])) {
-    die("Room ID missing");
+    fail("Room ID missing");
 }
 
 $roomID = intval($_GET['room_id']);
@@ -96,7 +115,7 @@ $stmt->bind_param("i", $roomID);
 $stmt->execute();
 $room = $stmt->get_result()->fetch_assoc();
 
-if(!$room) die("Room not found");
+if(!$room) fail("Room not found");
 
 /* Cover Image */
 $coverImage = "../../uploads/room/default-room.jpg";

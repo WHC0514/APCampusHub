@@ -3,12 +3,19 @@ session_start();
 
 date_default_timezone_set("Asia/Kuala_Lumpur");
 
-if(!isset($_SESSION['user_id'])) {
+if(!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || !in_array($_SESSION['role'], ["student", "lecturer"]))
+{
     header("Location: ../auth/login.php");
     exit();
 }
 
 require_once("../../config/db.php");
+
+$role = $_SESSION['role'] ?? 'student';
+
+$room_booking = ($role === "lecturer")
+    ? "../lecturer/room_booking.php"
+    : "../student/room_booking.php";
 
 $userID = $_SESSION['user_id'];
 
@@ -94,7 +101,7 @@ $historyResult = $stmtHistory->get_result();
 <div class="topbar profile-topbar">
     <div class="profile-topbar-left">
 
-        <a href="room_booking.php" class="back-btn">
+        <a href="<?php echo $room_booking; ?>" class="back-btn">
             <img src="../../assets/icons/back.png" class="back-icon">
         </a>
 

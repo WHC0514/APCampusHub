@@ -5,6 +5,30 @@ session_start();
 /* Set timezone */
 date_default_timezone_set("Asia/Kuala_Lumpur");
 
+$role = $_SESSION['role'] ?? 'student';
+
+$room_booking = ($role === "lecturer")
+    ? "../lecturer/room_booking.php"
+    : "../student/room_booking.php";
+
+function fail($msg)
+{
+    $role = $_SESSION['role'] ?? 'student';
+
+    if($role === "lecturer") {
+        $redirect = "../lecturer/room_booking.php";
+    } else {
+        $redirect = "../student/room_booking.php";
+    }
+
+    echo "<script>
+        alert('$msg');
+        window.location.href = '$redirect';
+    </script>";
+
+    exit();
+}
+
 if(!isset($_SESSION['user_id']))
 {
     header("Location: ../auth/login.php");
@@ -16,7 +40,7 @@ require_once("../../config/db.php");
 /* Check the room ID */
 if(!isset($_GET['room_id']))
 {
-    header("Location: room_booking.php");
+    header("Location: $room_booking");
     exit();
 }
 
@@ -40,7 +64,7 @@ $roomResult = $stmtRoom->get_result();
 
 if($roomResult->num_rows == 0)
 {
-    die("Room not found.");
+    fail("Room not found.");
 }
 
 $room = $roomResult->fetch_assoc();
@@ -169,7 +193,7 @@ if($currentPointer >= $dayEnd)
         <div class="profile-topbar-left">
 
             <!-- Back Button -->
-            <a href="room_booking.php" class="back-btn">
+            <a href="<?php echo $room_booking; ?>" class="back-btn">
 
                 <img src="../../assets/icons/back.png" class="back-icon">
 

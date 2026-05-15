@@ -4,13 +4,28 @@ session_start();
 
 require_once("../../config/db.php");
 
-date_default_timezone_set(
-    "Asia/Kuala_Lumpur"
-);
+date_default_timezone_set("Asia/Kuala_Lumpur");
+
+function fail($msg)
+{
+    $role = $_SESSION['role'] ?? 'student';
+
+    if($role === "lecturer") {
+        $redirect = "../lecturer/dashboard.php";
+    } else {
+        $redirect = "../student/dashboard.php";
+    }
+
+    echo "<script>
+        alert('$msg');
+        window.location.href = '$redirect';
+    </script>";
+    exit();
+}
 
 if(!isset($_POST['booking_id']))
 {
-    exit("Invalid");
+    fail("Invalid request");
 }
 
 $bookingID =
@@ -24,6 +39,11 @@ WHERE rc.booking_id = ? LIMIT 1";
 
 $stmt = $conn->prepare($sql);
 
+if(!$stmt)
+{
+    fail("Database error (prepare failed)");
+}
+
 $stmt->bind_param("i", $bookingID);
 
 $stmt->execute();
@@ -32,7 +52,7 @@ $result = $stmt->get_result();
 
 if($result->num_rows == 0)
 {
-    exit("No session");
+    fail("No session found");
 }
 
 $data = $result->fetch_assoc();
@@ -41,7 +61,7 @@ $data = $result->fetch_assoc();
 
 if(!empty($data['actual_checkout']))
 {
-    exit("Already checked out");
+    fail("You have already checked out");
 }
 
 /* Update check-out */
@@ -53,6 +73,11 @@ $sqlUpdate = "UPDATE room_checkin SET actual_checkout = ?, occupancy_status = 'C
 
 $stmtUpdate =
 $conn->prepare($sqlUpdate);
+
+if(!$stmtUpdate)
+{
+    fail("Database error (update failed)");
+}
 
 $stmtUpdate->bind_param("si", $checkoutTime, $bookingID);
 

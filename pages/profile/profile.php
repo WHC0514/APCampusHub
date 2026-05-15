@@ -38,7 +38,61 @@ switch($role)
 }
 
 /* Get User Data */
-$sql = "SELECT u.username, s.name, s.identical_number, s.email, s.phone_number, s.gender, s.profile_photo FROM user u INNER JOIN student s ON u.user_id = s.user_id WHERE u.user_id = ?";
+$user = null;
+
+if($role === "student")
+{
+    $sql = "SELECT u.username,
+                   s.name,
+                   s.identical_number,
+                   s.email,
+                   s.phone_number,
+                   s.gender,
+                   s.profile_photo
+            FROM user u
+            INNER JOIN student s ON u.user_id = s.user_id
+            WHERE u.user_id = ?";
+} elseif($role === "lecturer")
+{
+    $sql = "SELECT u.username,
+                   l.name,
+                   l.identical_number,
+                   l.email,
+                   l.phone_number,
+                   l.gender,
+                   l.profile_photo
+            FROM user u
+            INNER JOIN lecturer l ON u.user_id = l.user_id
+            WHERE u.user_id = ?";
+} elseif($role === "admin")
+{
+    $sql = "SELECT u.username,
+                   a.name,
+                   a.identical_number,
+                   a.email,
+                   a.phone_number,
+                   a.gender,
+                   a.profile_photo
+            FROM user u
+            INNER JOIN admin a ON u.user_id = a.user_id
+            WHERE u.user_id = ?";
+} elseif($role === "staff")
+{
+    $sql = "SELECT u.username,
+                   st.name,
+                   st.identical_number,
+                   st.email,
+                   st.phone_number,
+                   st.gender,
+                   st.profile_photo
+            FROM user u
+            INNER JOIN staff st ON u.user_id = st.user_id
+            WHERE u.user_id = ?";
+} else
+{
+    header("Location: ../auth/login.php");
+    exit();
+}
 
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $userID);

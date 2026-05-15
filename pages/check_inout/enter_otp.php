@@ -2,7 +2,7 @@
 
 session_start();
 
-if(!isset($_SESSION['user_id']))
+if(!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || !in_array($_SESSION['role'], ["student", "lecturer"]))
 {
     header("Location: ../auth/login.php");
     exit();
@@ -12,10 +12,35 @@ require_once("../../config/db.php");
 
 date_default_timezone_set("Asia/Kuala_Lumpur");
 
+$role = $_SESSION['role'] ?? 'student';
+
+$dashboard = ($role === "lecturer")
+    ? "../lecturer/checkin.php"
+    : "../student/checkin.php";
+
+/* Show error and redirect user to their dashboard */
+function fail($msg)
+{
+    $role = $_SESSION['role'] ?? 'student';
+
+    if($role === "lecturer") {
+        $redirect = "../lecturer/dashboard.php";
+    } else {
+        $redirect = "../student/dashboard.php";
+    }
+
+    echo "<script>
+        alert('$msg');
+        window.location.href = '$redirect';
+    </script>";
+
+    exit();
+}
+
 /* Validate booking ID */
 if(!isset($_GET['booking_id']))
 {
-    die("Booking ID missing");
+    fail("Booking ID missing");
 }
 
 $bookingID = intval($_GET['booking_id']);
@@ -42,7 +67,7 @@ $result = $stmt->get_result();
 
 if($result->num_rows == 0)
 {
-    die("Booking not found");
+    fail("Booking not found");
 }
 
 $booking = $result->fetch_assoc();
@@ -58,7 +83,7 @@ $closeCheckin = $bookingStart + 1800;
 
 if($currentTime < $allowCheckin || $currentTime > $closeCheckin)
 {
-    die("Check in unavailable");
+    fail("Check in unavailable");
 }
 
 $image = "../../uploads/room/default-room.jpg";
@@ -92,7 +117,7 @@ if(!empty($booking['cover_image']))
 
     <div class="profile-topbar-left">
 
-        <a href="checkin.php" class="back-btn">
+        <a href="$dashboard" class="back-btn">
 
             <img src="../../assets/icons/back.png" class="back-icon">
 
@@ -202,7 +227,7 @@ if(!empty($booking['cover_image']))
 
             </form>
 
-            <a href="checkin.php" class="back-btn-page">
+            <a href="$dashboard" class="back-btn-page">
 
                 Back To Check In
 

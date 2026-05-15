@@ -2,7 +2,7 @@
 
 session_start();
 
-if(!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || $_SESSION['role'] !== "student")
+if(!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || $_SESSION['role'] !== "lecturer")
 {
     header("Location: ../auth/login.php");
     exit();
@@ -138,15 +138,6 @@ while($row = $suggestResult->fetch_assoc())
                 </div>
             </a>
 
-            <!-- Events Button -->
-            <a href="#" class="topbar-link">
-                <div class="topbar-item">
-
-                    <img src="../../assets/icons/events.png" alt="Events" class="topbar-icon">
-                    <span>Events</span>
-            
-                </div>
-            </a>
         </div>
     </div>
 
@@ -331,10 +322,6 @@ const pages = [
     {
     name: "Check In/Out",
     link: "../check_inout/room_check_redirect.php"
-    },
-    {
-    name: "Events",
-    link: "#"
     }
 ];
 

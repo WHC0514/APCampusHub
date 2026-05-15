@@ -23,11 +23,20 @@ if($result->num_rows > 0)
     /* Active session exists */
     header("Location: room_session.php?booking_id=" . $row['booking_id']);
     exit();
-}
-else
-{
+    
+} else {
     /* No active sessions */
-    header("Location: ../student/checkin.php");
+    $role = $_SESSION['role'] ?? 'student';
+
+    if($role === "lecturer")
+    {
+        header("Location: ../lecturer/checkin.php");
+    }
+    else
+    {
+        header("Location: ../student/checkin.php");
+    }
+
     exit();
 }
 ?>
