@@ -95,7 +95,7 @@ if($stmt)
             </a>
 
             <!-- Check In / Out Button -->
-            <a href="#" class="topbar-link">
+            <a href="../check_inout/room_check_redirect.php" class="topbar-link">
                 <div class="topbar-item">
 
                     <img src="../../assets/icons/check-in.png" alt="Check In" class="topbar-icon">
@@ -167,6 +167,86 @@ if($stmt)
         </div>
     </div>
 
+    <!-- Checkout Success -->
+    <?php if(isset($_GET['checkout_success'])): ?>
+
+        <div class="session-ended-overlay">
+
+            <div class="session-ended-card">
+
+                <button class="close-ended-btn" onclick="closeEndedCard()">
+
+                    <img src="../../assets/icons/close.png" class="close-ended-icon">
+
+                </button>
+
+                <div class="ended-icon">
+                    <img src="../../assets/icons/check.png" class="ended-icon-img">
+                </div>
+
+                <h2>
+                    Checkout Successful
+                </h2>
+
+                <p>
+
+                    You have successfully
+                    checked out from the room.
+
+                    <br><br>
+
+                    Thank you for using
+                    APCampusHub.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    <?php endif; ?>
+
+
+    <!-- Session Ended -->
+    <?php if(isset($_GET['session_ended'])): ?>
+
+        <div class="session-ended-overlay">
+
+            <div class="session-ended-card">
+
+                <button class="close-ended-btn" onclick="closeEndedCard()">
+
+                    <img src="../../assets/icons/close.png" class="close-ended-icon">
+
+                </button>
+
+                <div class="ended-icon">
+
+                    <img src="../../assets/icons/door.png" class="ended-icon-img">
+
+                </div>
+
+                <h2>
+                    Booking Session Ended
+                </h2>
+
+                <p>
+
+                    Your booking session has ended.
+
+                    <br><br>
+
+                    Please leave the classroom
+                    as soon as possible.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    <?php endif; ?>
+
     <!-- Dashboard Content -->
     <div class="dashboard-content">
 
@@ -209,7 +289,7 @@ if($stmt)
                         and request for assist easily.
                     </p>
 
-                    <button class="primary-btn" onclick="location.href='#'">
+                    <button class="primary-btn" onclick="location.href='../check_inout/room_check_redirect.php'">
 
                         Open
 
@@ -253,7 +333,7 @@ if($stmt)
                         and available resources.
                     </p>
 
-                    <button class="primary-btn" onclick="location.href='#'">
+                    <button class="primary-btn" onclick="location.href='room_booking.php'">
 
                         View More
 
@@ -282,7 +362,7 @@ const pages = [
     },
     {
     name: "Check In/Out",
-    link: "#"
+    link: "../check_inout/room_check_redirect.php"
     },
     {
     name: "Events",
@@ -347,4 +427,22 @@ document.addEventListener("click", function(e){
 });
 
 </script>
+
+<script>
+
+function closeEndedCard()
+{
+    document.querySelector(
+        ".session-ended-overlay"
+    ).style.display = "none";
+
+    window.history.replaceState(
+        {},
+        document.title,
+        window.location.pathname
+    );
+}
+
+</script>
+
 </html>

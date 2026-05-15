@@ -1,0 +1,130 @@
+.otp-container{
+    width:100%;
+    min-height:calc(100vh - 105px);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:40px;
+}
+
+.otp-card{
+    width:100%;
+    max-width:500px;
+    background:#1a1a1a;
+    border-radius:24px;
+    overflow:hidden;
+    border:1px solid #2d2d2d;
+    box-shadow:0 10px 40px rgba(0,0,0,0.4);
+}
+
+.otp-image{
+    width:100%;
+    height:180px;
+    object-fit:cover;
+}
+
+.otp-body{
+    padding:30px;
+    text-align:center;
+}
+
+.otp-title{
+    font-size:32px;
+    margin-bottom:12px;
+    color:white;
+}
+
+.otp-subtitle{
+    color:#bfbfbf;
+    line-height:1.7;
+    margin-bottom:25px;
+}
+
+.room-info{
+    background:#222;
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:30px;
+    text-align:left;
+}
+
+.room-info p{
+    color:#d6d6d6;
+    margin-bottom:8px;
+}
+
+.otp-input-group{
+    display:flex;
+    justify-content:center;
+    gap:18px;
+    margin-bottom:30px;
+}
+
+.otp-input{
+    width:75px;
+    height:85px;
+    border:none;
+    border-radius:18px;
+    background:#2b2b2b;
+    color:white;
+    font-size:36px;
+    text-align:center;
+    outline:none;
+    transition:0.3s;
+}
+
+.otp-input:focus{
+    border:2px solid #2563eb;
+    background:#1f1f1f;
+}
+
+.verify-btn{
+    width:100%;
+    padding:16px;
+    border:none;
+    border-radius:14px;
+    background:#2563eb;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.verify-btn:hover{
+    background:#1d4ed8;
+}
+
+.back-btn-page{
+    display:inline-block;
+    margin-top:18px;
+    color:#9ca3af;
+    text-decoration:none;
+    transition:0.3s;
+}
+
+.back-btn-page:hover{
+    color:white;
+}
+
+.error-msg{
+    background:#3b1d1d;
+    color:#ff8f8f;
+    padding:14px;
+    border-radius:12px;
+    margin-bottom:20px;
+    display:none;
+}
+
+@media(max-width:600px)
+{
+    .otp-input{
+        width:60px;
+        height:70px;
+        font-size:28px;
+    }
+
+    .otp-input-group{
+        gap:12px;
+    }
+}

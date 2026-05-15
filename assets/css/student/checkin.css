@@ -1,0 +1,126 @@
+.page-container{
+    width:100%;
+    padding:35px;
+}
+
+.page-title{
+    font-size:32px;
+    margin-bottom:30px;
+    color:white;
+}
+
+.booking-grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:30px;
+    align-items: start;
+}
+
+.booking-card{
+    width: 100%;
+    background:#1a1a1a;
+    border-radius:18px;
+    overflow:hidden;
+    border:1px solid #2c2c2c;
+    transition:0.3s;
+}
+
+.booking-card:hover{
+    transform:translateY(-5px);
+    border-color:#2563eb;
+}
+
+.booking-image{
+    width:100%;
+    height:180px;
+    object-fit:cover;
+}
+
+.booking-body{
+    padding:22px;
+}
+
+.booking-title{
+    font-size:24px;
+    margin-bottom:10px;
+    color:white;
+}
+
+.booking-badge{
+    display:inline-block;
+    background:#2563eb;
+    color:white;
+    padding:6px 14px;
+    border-radius:30px;
+    font-size:13px;
+    margin-bottom:16px;
+}
+
+.booking-info{
+    color:#cfcfcf;
+    margin-bottom:10px;
+    line-height:1.6;
+}
+
+.status-box{
+    margin-top:18px;
+    padding:12px;
+    border-radius:10px;
+    font-size:14px;
+    font-weight:bold;
+}
+
+.status-upcoming{
+    background:#2b2b2b;
+    color:#facc15;
+}
+
+.status-active{
+    background:#1e3a8a;
+    color:white;
+}
+
+.status-expired{
+    background:#3b1d1d;
+    color:#ff7b7b;
+}
+
+.action-btn{
+    width:100%;
+    margin-top:20px;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    background:#2563eb;
+    color:white;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.action-btn:hover{
+    background:#1d4ed8;
+}
+
+.action-btn.disabled{
+    background:#444;
+    cursor:not-allowed;
+}
+
+.empty-box{
+    width:100%;
+    padding:60px;
+    text-align:center;
+    background:#1a1a1a;
+    border-radius:18px;
+    color:#cfcfcf;
+    font-size:18px;
+}
+
+@media(max-width:900px)
+{
+    .booking-grid{
+        grid-template-columns:1fr;
+    }
+}

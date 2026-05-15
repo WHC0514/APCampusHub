@@ -129,7 +129,7 @@ while($row = $suggestResult->fetch_assoc())
             </a>
 
             <!-- Check In / Out Button -->
-            <a href="#" class="topbar-link">
+            <a href="../check_inout/room_check_redirect.php" class="topbar-link">
                 <div class="topbar-item">
 
                     <img src="../../assets/icons/check-in.png" alt="Check In" class="topbar-icon">
@@ -330,7 +330,7 @@ const pages = [
     },
     {
     name: "Check In/Out",
-    link: "#"
+    link: "../check_inout/room_check_redirect.php"
     },
     {
     name: "Events",

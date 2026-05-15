@@ -1,0 +1,79 @@
+body{
+    background:#0f0f0f;
+}
+
+.otp-wrapper{
+    width:100%;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:40px;
+}
+
+.otp-card{
+    width:100%;
+    max-width:850px;
+    background:#1a1a1a;
+    border-radius:25px;
+    overflow:hidden;
+    border:1px solid #2c2c2c;
+}
+
+.room-image{
+    width:100%;
+    height:180px;
+    object-fit:cover;
+}
+
+.otp-body{
+    padding:40px;
+    text-align:center;
+}
+
+.room-name{
+    font-size:34px;
+    color:white;
+}
+
+.room-info{
+    color:#bcbcbc;
+    margin-bottom:25px;
+}
+
+.success-box{
+    padding:30px;
+}
+
+.success-box h2{
+    color:#22c55e;
+    font-size:30px;
+    margin-bottom:15px;
+}
+
+.success-box p{
+    color:#ccc;
+    font-size:18px;
+    line-height:1.8;
+}
+
+.otp-label{
+    color:#888;
+    margin-bottom:15px;
+}
+
+.otp-code{
+    font-size:110px;
+    color:#2563eb;
+    font-weight:bold;
+    letter-spacing:15px;
+}
+
+.timer-box{
+    margin-top:20px;
+    color:white;
+    background:#222;
+    padding:12px 20px;
+    display:inline-block;
+    border-radius:12px;
+}
