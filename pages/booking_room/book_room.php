@@ -186,7 +186,7 @@ $nextAvailable = !empty($availableBlocks) ? $availableBlocks[0] : null;
     <title>APCampusHub</title>
     <link rel="stylesheet" href="../../assets/css/general.css">
     <link rel="stylesheet" href="../../assets/css/profile.css">
-    <link rel="stylesheet" href="../../assets/css/student/book_room.css">
+    <link rel="stylesheet" href="../../assets/css/booking_room/book_room.css">
 </head>
 <body>
 

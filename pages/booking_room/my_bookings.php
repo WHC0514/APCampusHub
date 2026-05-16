@@ -92,7 +92,7 @@ $historyResult = $stmtHistory->get_result();
 
     <link rel="stylesheet" href="../../assets/css/general.css">
     <link rel="stylesheet" href="../../assets/css/profile.css">
-    <link rel="stylesheet" href="../../assets/css/student/my_bookings.css">
+    <link rel="stylesheet" href="../../assets/css/booking_room/my_bookings.css">
 </head>
 
 <body>

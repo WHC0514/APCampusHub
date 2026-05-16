@@ -183,7 +183,7 @@ if($currentPointer >= $dayEnd)
 
     <link rel="stylesheet" href="../../assets/css/general.css">
     <link rel="stylesheet" href="../../assets/css/profile.css">
-    <link rel="stylesheet" href="../../assets/css/student/room_detail.css">
+    <link rel="stylesheet" href="../../assets/css/booking_room/room_detail.css">
 </head>
 <body>
 
