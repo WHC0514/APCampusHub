@@ -1,0 +1,33 @@
+.status-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:6px 14px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:600;
+    min-width:110px;
+    margin-left:10px;
+    vertical-align:middle;
+}
+
+/* Status colors */
+.status-available{
+    background:rgba(34,197,94,0.2);
+    color:#22c55e;
+}
+
+.status-occupied{
+    background:rgba(59,130,246,0.2);
+    color:#3b82f6;
+}
+
+.status-maintenance{
+    background:rgba(234,179,8,0.2);
+    color:#eab308;
+}
+
+.status-inactive{
+    background:rgba(239,68,68,0.2);
+    color:#ef4444;
+}
