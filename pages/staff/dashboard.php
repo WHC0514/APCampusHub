@@ -105,7 +105,7 @@ if($stmt)
             </a>
 
             <!-- View Activity Button -->
-            <a href="#" class="topbar-link">
+            <a href="view_activity.php" class="topbar-link">
                 <div class="topbar-item">
 
                     <img src="../../assets/icons/view-report.png" alt="View Activity" class="topbar-icon">
@@ -358,7 +358,7 @@ const pages = [
     },
     {
     name: "Manage Rooms",
-    link: "#"
+    link: "manage_rooms.php"
     },
     {
     name: "Manage Resource",
@@ -366,7 +366,7 @@ const pages = [
     },
     {
     name: "View Activity",
-    link: "#"
+    link: "view_activity.php"
     }
 ];
 
@@ -425,23 +425,6 @@ document.addEventListener("click", function(e){
         searchResult.style.display = "none";
     }
 });
-
-</script>
-
-<script>
-
-function closeEndedCard()
-{
-    document.querySelector(
-        ".session-ended-overlay"
-    ).style.display = "none";
-
-    window.history.replaceState(
-        {},
-        document.title,
-        window.location.pathname
-    );
-}
 
 </script>
 

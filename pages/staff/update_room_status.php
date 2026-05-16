@@ -36,8 +36,7 @@ if(!in_array($status, $allowed)) {
 }
 
 /* Check current room state */
-$sqlCheck = "SELECT r.status AS room_status, rs.status AS live_status
-             FROM room r
+$sqlCheck = "SELECT r.status AS room_status, rs.status AS live_status FROM room r
              LEFT JOIN room_status rs ON r.room_id = rs.room_id
              WHERE r.room_id = ? LIMIT 1";
 
@@ -91,13 +90,11 @@ switch($status) {
         $liveStatus = "Available";
 }
 
-/* 1. Update ROOM table (master status) */
 $sql = "UPDATE room SET status = ? WHERE room_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("si", $roomStatus, $roomID);
 $stmt->execute();
 
-/* 2. Update ROOM_STATUS table (live status) */
 $sqlCheck = "SELECT room_id FROM room_status WHERE room_id = ?";
 $stmt = $conn->prepare($sqlCheck);
 $stmt->bind_param("i", $roomID);

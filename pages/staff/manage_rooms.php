@@ -126,7 +126,7 @@ while($row = $suggestResult->fetch_assoc())
         <a href="manage_rooms.php" class="topbar-link active">
             <div class="topbar-item">
                 <img src="../../assets/icons/room-booking.png" class="topbar-icon">
-                <span>Room Booking</span>
+                <span>Manage Rooms</span>
             </div>
         </a>
 
@@ -137,7 +137,7 @@ while($row = $suggestResult->fetch_assoc())
             </div>
         </a>
 
-        <a href="#" class="topbar-link">
+        <a href="view_activity.php" class="topbar-link">
             <div class="topbar-item">
                 <img src="../../assets/icons/view-report.png" class="topbar-icon">
                 <span>View Activity</span>
@@ -263,4 +263,89 @@ else {
 </div>
 
 </body>
+
+<script>
+
+/* Searchable pages */
+const pages = [
+    {
+    name: "Dashboard",
+    link: "dashboard.php"
+    },
+    {
+    name: "My Account",
+    link: "../profile/profile.php"
+    },
+    {
+    name: "Manage Rooms",
+    link: "manage_rooms.php"
+    },
+    {
+    name: "Manage Resource",
+    link: "#"
+    },
+    {
+    name: "View Activity",
+    link: "view_activity.php"
+    }
+];
+
+const searchInput = document.getElementById("searchInput");
+const searchResult = document.getElementById("searchResult");
+
+/* Live search */
+searchInput.addEventListener("keyup", function(){
+    let input = searchInput.value.toLowerCase();
+    searchResult.innerHTML = "";
+
+    /* Empty input */
+    if(input === "")
+    {
+        searchResult.style.display = "none";
+        return;
+    }
+
+    /* Filter results */
+    let filtered = pages.filter(page => page.name.toLowerCase().includes(input));
+
+    /* No result */
+    if(filtered.length === 0)
+    {
+        searchResult.innerHTML = 
+        `
+            <div class="search-item">
+                No result found
+            </div>
+        `;
+
+        searchResult.style.display = "block";
+        return;
+    }
+
+    /* Show results */
+    filtered.forEach(page => {
+        searchResult.innerHTML +=
+        `
+            <div class="search-item clickable"
+                onclick="window.location.href='${page.link}'">
+
+                ${page.name}
+
+            </div>
+        `;
+    });
+
+    searchResult.style.display = "block";
+});
+
+/* Hide when click outside */
+document.addEventListener("click", function(e){
+    if(!document.querySelector(".search-container").contains(e.target))
+    {
+        searchResult.style.display = "none";
+    }
+});
+
+</script>
+
 </html>
