@@ -114,9 +114,10 @@ if(!$booking) {
             <div id="resourceBox" class="form-group" style="display:none;">
                 <label>Resource Type</label>
                 <select name="resource_type">
-                    <option value="HDMI Cable">HDMI Cable</option>
+                    <option value="" disabled selected>-- Please select one --</option>
+                    <option value="Cables">Cables</option>
                     <option value="Extension Plug">Extension Plug</option>
-                    <option value="Marker Pen">Marker Pen</option>
+                    <option value="Stationary">Stationary</option>
                 </select>
             </div>
 

@@ -14,7 +14,7 @@ if(!isset($_SESSION['user_id']) || $_SESSION['role'] !== "staff")
 }
 
 /* Validate POST */
-if(!isset($_POST['request_id'], $_POST['status']))
+if(!isset($_POST['request_id'], $_POST['status'], $_POST['source']))
 {
     echo "<script>
         alert('Invalid request.');
@@ -25,6 +25,7 @@ if(!isset($_POST['request_id'], $_POST['status']))
 
 $requestID = intval($_POST['request_id']);
 $status = trim($_POST['status']);
+$source = $_POST['source'];
 
 /* Allowed statuses */
 $allowedStatus = ["Pending", "In Progress", "Done"];
@@ -38,11 +39,35 @@ if(!in_array($status, $allowedStatus))
     exit();
 }
 
-/* Check request exists */
-$sqlCheck = "SELECT request_id FROM room_service_request WHERE request_id = ?";
+/* Determine which table */
+$table = "";
+$pk = "";
+
+if($source === "room")
+{
+    $table = "room_service_request";
+    $pk = "request_id";
+}
+elseif($source === "event")
+{
+    $table = "event_resource_request";
+    $pk = "request_id";
+}
+else
+{
+    echo "<script>
+        alert('Invalid request source.');
+        window.location.href = '../staff/view_activity.php';
+    </script>";
+    exit();
+}
+
+/* Check exist or not */
+$sqlCheck = "SELECT $pk FROM $table WHERE $pk = ?";
 $stmtCheck = $conn->prepare($sqlCheck);
 $stmtCheck->bind_param("i", $requestID);
 $stmtCheck->execute();
+
 $result = $stmtCheck->get_result();
 
 if($result->num_rows == 0)
@@ -54,8 +79,8 @@ if($result->num_rows == 0)
     exit();
 }
 
-/* Update status */
-$sqlUpdate = "UPDATE room_service_request SET status = ? WHERE request_id = ?";
+/* Update */
+$sqlUpdate = "UPDATE $table SET status = ? WHERE $pk = ?";
 $stmtUpdate = $conn->prepare($sqlUpdate);
 $stmtUpdate->bind_param("si", $status, $requestID);
 

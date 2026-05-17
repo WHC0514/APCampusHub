@@ -111,6 +111,10 @@ if($_SERVER["REQUEST_METHOD"] === "POST")
                 <option value="Cables" <?php if($resource['resource_type']=="Cables") echo "selected"; ?>>Cables</option>
                 <option value="Extension Plug" <?php if($resource['resource_type']=="Extension Plug") echo "selected"; ?>>Extension Plug</option>
                 <option value="Stationary" <?php if($resource['resource_type']=="Stationary") echo "selected"; ?>>Stationary</option>
+                <option value="Projector" <?php if($resource['resource_type']=="Projector") echo "selected"; ?>>Projector</option>
+                <option value="Microphone" <?php if($resource['resource_type']=="Microphone") echo "selected"; ?>>Microphone</option>
+                <option value="Laptop" <?php if($resource['resource_type']=="Laptop") echo "selected"; ?>>Laptop</option>
+                <option value="Tables Chairs" <?php if($resource['resource_type']=="Tables Chairs") echo "selected"; ?>>Tables Chairs</option>
             </select>
 
             <label>Quantity</label>

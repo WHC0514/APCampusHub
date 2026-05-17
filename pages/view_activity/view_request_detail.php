@@ -11,31 +11,67 @@ if(!isset($_SESSION['user_id']) || $_SESSION['role'] !== "staff")
     exit();
 }
 
-/* Validate ID */
-if(!isset($_GET['id']))
+/* Validate */
+if(!isset($_GET['id']) || !isset($_GET['source']))
 {
     header("Location: ../staff/view_activity.php");
     exit();
 }
 
 $requestID = intval($_GET['id']);
+$requestSource = $_GET['source'];
+$source = $_GET['source'];
 
-/* Get request detail */
-$sql = "SELECT 
-            rsr.*,
-            r.room_name
-        FROM room_service_request rsr
-        LEFT JOIN room r 
-        ON rsr.room_id = r.room_id
-        WHERE rsr.request_id = ?";
+$request = null;
 
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $requestID);
-$stmt->execute();
+/* Get room request data */
+if($source === "room")
+{
+    $sql = "SELECT 
+                rsr.*,
+                r.room_name
+            FROM room_service_request rsr
+            LEFT JOIN room r 
+            ON rsr.room_id = r.room_id
+            WHERE rsr.request_id = ?";
 
-$result = $stmt->get_result();
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $requestID);
+    $stmt->execute();
 
-if($result->num_rows == 0)
+    $result = $stmt->get_result();
+
+    if($result->num_rows > 0)
+    {
+        $request = $result->fetch_assoc();
+    }
+}
+
+/* Get event request data */
+elseif($source === "event")
+{
+    $sql = "SELECT 
+                err.*,
+                ev.venue_name AS room_name
+            FROM event_resource_request err
+            LEFT JOIN event_venue ev
+            ON err.venue_id = ev.venue_id
+            WHERE err.request_id = ?";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $requestID);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    if($result->num_rows > 0)
+    {
+        $request = $result->fetch_assoc();
+    }
+}
+
+/* Not found */
+if(!$request)
 {
     echo "<script>
         alert('Request not found.');
@@ -44,12 +80,13 @@ if($result->num_rows == 0)
     exit();
 }
 
-$request = $result->fetch_assoc();
+/* Get user name */
 
 $sqlUser = "SELECT role FROM user WHERE user_id = ?";
 $stmtUser = $conn->prepare($sqlUser);
 $stmtUser->bind_param("i", $request['user_id']);
 $stmtUser->execute();
+
 $userResult = $stmtUser->get_result();
 
 $userRole = null;
@@ -146,14 +183,35 @@ if($sqlName)
 
                 <div class="detail-item">
                     <label>Booking ID</label>
-                    <p><?php echo $request['booking_id']; ?></p>
+
+                        <p>
+                            <?php 
+                                echo !empty($request['booking_id']) 
+                                    ? $request['booking_id'] 
+                                    : "-"; 
+                            ?>
+                        </p>
                 </div>
 
                 <div class="detail-item">
-                    <label>Room</label>
+                    <label>
+                        <?php echo ($requestSource === "event") ? "Venue" : "Room"; ?>
+                    </label>
+
                     <p>
+
                         <?php echo $request['room_name']; ?>
-                        (ID: <?php echo $request['room_id']; ?>)
+
+                        <?php if($requestSource === "event") { ?>
+
+                            (ID: <?php echo $request['venue_id']; ?>)
+
+                        <?php } else { ?>
+
+                            (ID: <?php echo $request['room_id']; ?>)
+
+                        <?php } ?>
+
                     </p>
                 </div>
 
@@ -167,7 +225,14 @@ if($sqlName)
 
                 <div class="detail-item">
                     <label>Request Type</label>
-                    <p><?php echo $request['request_type']; ?></p>
+
+                    <p>
+                        <?php 
+                            echo !empty($request['request_type']) 
+                                ? $request['request_type'] 
+                                : "-"; 
+                        ?>
+                    </p>
                 </div>
 
                 <div class="detail-item">
@@ -201,6 +266,7 @@ if($sqlName)
             <form method="POST" action="update_request_status.php">
 
                 <input type="hidden" name="request_id" value="<?php echo $request['request_id']; ?>">
+                <input type="hidden" name="source" value="<?php echo $source; ?>">
 
                 <div class="action-section">
 

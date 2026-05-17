@@ -16,17 +16,36 @@ $sql = "SELECT * FROM resource WHERE status = 'Available'";
 $result = $conn->query($sql);
 
 /* Get borrow data */
-$sqlUsers = "SELECT 
+$sqlUsers = "
+
+SELECT 
     rsr.user_id,
-    rsr.room_id,
+    rsr.room_id AS location_id,
+    'room' AS source_type,
     u.role,
-    r.room_name
+    r.room_name AS location_name
 FROM room_service_request rsr
 LEFT JOIN user u ON rsr.user_id = u.user_id
 LEFT JOIN room r ON rsr.room_id = r.room_id
 WHERE rsr.request_type = 'Borrow Resource'
 AND rsr.status IN ('Pending', 'In Progress')
-GROUP BY rsr.user_id, rsr.room_id";
+
+UNION ALL
+
+SELECT 
+    err.user_id,
+    err.venue_id AS location_id,
+    'event' AS source_type,
+    u.role,
+    ev.venue_name AS location_name
+FROM event_resource_request err
+LEFT JOIN user u ON err.user_id = u.user_id
+LEFT JOIN event_venue ev ON err.venue_id = ev.venue_id
+AND err.status IN ('Pending', 'In Progress')
+
+GROUP BY user_id, location_id
+
+";
 
 $userResult = $conn->query($sqlUsers);
 
@@ -112,7 +131,7 @@ $userResult = $conn->query($sqlUsers);
                     }
                 }
 
-                $display = $name . " (" . $u['room_name'] . ")";
+                $display = $name . " (" . $u['location_name'] . ")";
                 ?>
 
                     <option value="<?php echo $u['user_id']; ?>">

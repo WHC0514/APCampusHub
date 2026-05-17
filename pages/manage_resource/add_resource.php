@@ -75,9 +75,14 @@ if($_SERVER["REQUEST_METHOD"] === "POST")
 
             <label>Resource Type</label>
             <select name="resource_type" required>
+                <option value="" disabled selected>-- Please select one --</option>
                 <option value="Cables">Cables</option>
                 <option value="Extension Plug">Extension Plug</option>
                 <option value="Stationary">Stationary</option>
+                <option value="Projector">Projector</option>
+                <option value="Microphone">Microphone</option>
+                <option value="Laptop">Laptop</option>
+                <option value="Tables Chairs">Tables Chairs</option>
             </select>
 
             <label>Quantity</label>

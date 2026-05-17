@@ -12,13 +12,46 @@ if(!isset($_SESSION['user_id']) || $_SESSION['role'] !== "staff")
 }
 
 /* Get requests data (Exclude Done) */
-$sqlRequest = "SELECT 
-    rsr.*,
-    r.room_name
+$sqlRequest = "
+
+SELECT 
+    rsr.request_id,
+    rsr.booking_id,
+    rsr.request_type,
+    rsr.status,
+    rsr.created_at,
+    r.room_name AS location_name,
+    'Room Request' AS source_type
+
 FROM room_service_request rsr
-LEFT JOIN room r ON rsr.room_id = r.room_id
+
+LEFT JOIN room r 
+ON rsr.room_id = r.room_id
+
 WHERE rsr.status != 'Done'
-ORDER BY rsr.created_at ASC
+
+
+UNION ALL
+
+
+SELECT 
+    err.request_id,
+    err.booking_id,
+    '-' AS request_type,
+    err.status,
+    err.created_at,
+    ev.venue_name AS location_name,
+    'Event Request' AS source_type
+
+FROM event_resource_request err
+
+LEFT JOIN event_venue ev
+ON err.venue_id = ev.venue_id
+
+WHERE err.status != 'Done'
+
+ORDER BY created_at ASC
+
 ";
 
 $requestResult = $conn->query($sqlRequest);
@@ -178,7 +211,8 @@ $reportCount = $reportResult->num_rows;
 
                     <tr>
 
-                        <th>Room</th>
+                        <th>Location</th>
+                        <th>Source</th>
                         <th>Booking ID</th>
                         <th>Type</th>
                         <th>Status</th>
@@ -212,7 +246,11 @@ $reportCount = $reportResult->num_rows;
                     <tr>
 
                         <td>
-                            <?php echo htmlspecialchars($r['room_name']); ?>
+                            <?php echo htmlspecialchars($r['location_name']); ?>
+                        </td>
+
+                        <td>
+                            <?php echo htmlspecialchars($r['source_type']); ?>
                         </td>
 
                         <td>
@@ -239,7 +277,7 @@ $reportCount = $reportResult->num_rows;
 
                         <td>
 
-                            <a href="../view_activity/view_request_detail.php?id=<?php echo $r['request_id']; ?>" class="view-btn">
+                            <a href="../view_activity/view_request_detail.php?id=<?php echo $r['request_id']; ?>&source=<?php echo ($r['source_type'] === 'Room Request') ? 'room' : 'event'; ?>" class="view-btn">
 
                                 View
 
