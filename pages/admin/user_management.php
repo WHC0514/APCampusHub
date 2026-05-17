@@ -175,7 +175,7 @@ if($search !== '')
         </a>
 
         <!-- Event Management -->
-        <a href="#" class="topbar-link">
+        <a href="event_management.php" class="topbar-link">
 
             <div class="topbar-item">
 
@@ -308,14 +308,19 @@ const pages = [
     link: "dashboard.php"
     },
     {
+    name: "My Account",
+    link: "../profile/profile.php"
+    },
+    {
     name: "User Management",
     link: "user_management.php"
     },
     {
     name: "Event Management",
-    link: "#"
+    link: "event_management.php"
     }
 ];
+
 
 const searchInput = document.getElementById("searchInput");
 const searchResult = document.getElementById("searchResult");

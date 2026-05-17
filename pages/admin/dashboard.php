@@ -95,7 +95,7 @@ if($stmt)
             </a>
 
             <!-- Event Management Button -->
-            <a href="#" class="topbar-link">
+            <a href="event_management.php" class="topbar-link">
                 <div class="topbar-item">
 
                     <img src="../../assets/icons/events.png" alt="Event Management" class="topbar-icon">
@@ -176,7 +176,7 @@ if($stmt)
                         at anytime anywhere.
                     </p>
 
-                    <button class="primary-btn" onclick="location.href='#'">
+                    <button class="primary-btn" onclick="location.href='user_management.php'">
 
                         Manage
 
@@ -199,7 +199,7 @@ if($stmt)
                         in our university campus more easily.
                     </p>
 
-                    <button class="primary-btn" onclick="location.href='#'">
+                    <button class="primary-btn" onclick="location.href='event_management.php'">
 
                         View More
 
@@ -221,7 +221,7 @@ if($stmt)
                         with a more easy way.
                     </p>
 
-                    <button class="primary-btn" onclick="location.href='#'">
+                    <button class="primary-btn" onclick="location.href='../event_management/manage_request.php'">
 
                         Explore
 
@@ -243,7 +243,7 @@ if($stmt)
                         and get the information you need more easily.
                     </p>
 
-                    <button class="primary-btn" onclick="location.href='room_booking.php'">
+                    <button class="primary-btn" onclick="location.href='../event_management/manage_request.php'">
 
                         View More
 
@@ -263,12 +263,16 @@ const pages = [
     link: "dashboard.php"
     },
     {
+    name: "My Account",
+    link: "../profile/profile.php"
+    },
+    {
     name: "User Management",
     link: "user_management.php"
     },
     {
     name: "Event Management",
-    link: "#"
+    link: "event_management.php"
     }
 ];
 
