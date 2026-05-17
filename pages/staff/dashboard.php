@@ -95,7 +95,7 @@ if($stmt)
             </a>
 
             <!-- Manage Resource Button -->
-            <a href="#" class="topbar-link">
+            <a href="manage_resource.php" class="topbar-link">
                 <div class="topbar-item">
 
                     <img src="../../assets/icons/manage-resource.png" alt="Manage Resource" class="topbar-icon">
@@ -167,86 +167,6 @@ if($stmt)
         </div>
     </div>
 
-    <!-- Checkout Success -->
-    <?php if(isset($_GET['checkout_success'])): ?>
-
-        <div class="session-ended-overlay">
-
-            <div class="session-ended-card">
-
-                <button class="close-ended-btn" onclick="closeEndedCard()">
-
-                    <img src="../../assets/icons/close.png" class="close-ended-icon">
-
-                </button>
-
-                <div class="ended-icon">
-                    <img src="../../assets/icons/check.png" class="ended-icon-img">
-                </div>
-
-                <h2>
-                    Checkout Successful
-                </h2>
-
-                <p>
-
-                    You have successfully
-                    checked out from the room.
-
-                    <br><br>
-
-                    Thank you for using
-                    APCampusHub.
-
-                </p>
-
-            </div>
-
-        </div>
-
-    <?php endif; ?>
-
-
-    <!-- Session Ended -->
-    <?php if(isset($_GET['session_ended'])): ?>
-
-        <div class="session-ended-overlay">
-
-            <div class="session-ended-card">
-
-                <button class="close-ended-btn" onclick="closeEndedCard()">
-
-                    <img src="../../assets/icons/close.png" class="close-ended-icon">
-
-                </button>
-
-                <div class="ended-icon">
-
-                    <img src="../../assets/icons/door.png" class="ended-icon-img">
-
-                </div>
-
-                <h2>
-                    Booking Session Ended
-                </h2>
-
-                <p>
-
-                    Your booking session has ended.
-
-                    <br><br>
-
-                    Please leave the classroom
-                    as soon as possible.
-
-                </p>
-
-            </div>
-
-        </div>
-
-    <?php endif; ?>
-
     <!-- Dashboard Content -->
     <div class="dashboard-content">
 
@@ -266,7 +186,7 @@ if($stmt)
                         upgrade and cleaning more easily.
                     </p>
 
-                    <button class="primary-btn" onclick="location.href='#'">
+                    <button class="primary-btn" onclick="location.href='manage_rooms.php'">
 
                         Open
 
@@ -289,7 +209,7 @@ if($stmt)
                         variety of resource in university.
                     </p>
 
-                    <button class="primary-btn" onclick="location.href='#'">
+                    <button class="primary-btn" onclick="location.href='manage_resource.php'">
 
                         Explore
 
@@ -311,7 +231,7 @@ if($stmt)
                         at anytime anywhere.
                     </p>
 
-                    <button class="primary-btn" onclick="location.href='#'">
+                    <button class="primary-btn" onclick="location.href='manage_resource.php'">
 
                         View
 
@@ -333,7 +253,7 @@ if($stmt)
                         receive request and provide help to user.
                     </p>
 
-                    <button class="primary-btn" onclick="location.href='#'">
+                    <button class="primary-btn" onclick="location.href='view_activity.php'">
 
                         Explore
 
@@ -362,7 +282,7 @@ const pages = [
     },
     {
     name: "Manage Resource",
-    link: "#"
+    link: "manage_resource.php"
     },
     {
     name: "View Activity",

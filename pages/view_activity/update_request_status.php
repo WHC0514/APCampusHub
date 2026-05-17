@@ -18,7 +18,7 @@ if(!isset($_POST['request_id'], $_POST['status']))
 {
     echo "<script>
         alert('Invalid request.');
-        window.location.href = 'view_activity.php';
+        window.location.href = '../staff/view_activity.php';
     </script>";
     exit();
 }
@@ -49,7 +49,7 @@ if($result->num_rows == 0)
 {
     echo "<script>
         alert('Request not found.');
-        window.location.href = 'view_activity.php';
+        window.location.href = '../staff/view_activity.php';
     </script>";
     exit();
 }
@@ -63,7 +63,7 @@ if($stmtUpdate->execute())
 {
     echo "<script>
         alert('Request status updated successfully.');
-        window.location.href = 'view_activity.php';
+        window.location.href = '../staff/view_activity.php';
     </script>";
 }
 else

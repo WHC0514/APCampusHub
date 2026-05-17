@@ -16,7 +16,7 @@ if(!isset($_SESSION['user_id']) || $_SESSION['role'] !== "staff") {
 if(!isset($_POST['room_id'], $_POST['status'])) {
     echo "<script>
         alert('Invalid request.');
-        window.location.href = 'manage_rooms.php';
+        window.location.href = '../staff/manage_rooms.php';
     </script>";
     exit();
 }
@@ -48,7 +48,7 @@ $result = $stmt->get_result();
 if($result->num_rows == 0) {
     echo "<script>
         alert('Room not found.');
-        window.location.href = 'manage_rooms.php';
+        window.location.href = '../staff/manage_rooms.php';
     </script>";
     exit();
 }
@@ -59,7 +59,7 @@ $row = $result->fetch_assoc();
 if($row['live_status'] === "In Use") {
     echo "<script>
         alert('Room is currently IN USE. Cannot change status.');
-        window.location.href = 'manage_rooms.php';
+        window.location.href = '../staff/manage_rooms.php';
     </script>";
     exit();
 }
@@ -119,7 +119,7 @@ if($res->num_rows > 0) {
 /* Success */
 echo "<script>
     alert('Room status updated successfully!');
-    window.location.href = 'manage_rooms.php';
+    window.location.href = '../staff/manage_rooms.php';
 </script>";
 
 exit();

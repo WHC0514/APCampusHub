@@ -53,330 +53,330 @@ $reportCount = $reportResult->num_rows;
 </head>
 <body>
 
-<!-- Topbar -->
-<div class="topbar">
+    <!-- Topbar -->
+    <div class="topbar">
 
-    <div class="topbar-left">
+        <div class="topbar-left">
 
-        <img src="../../assets/images/app-logo.png" class="topbar-logo">
+            <img src="../../assets/images/app-logo.png" class="topbar-logo">
 
-        <div class="search-container">
+            <div class="search-container">
 
-            <input type="text" class="search-bar" id="searchInput" placeholder="Search APCampusHub">
+                <input type="text" class="search-bar" id="searchInput" placeholder="Search APCampusHub">
 
-            <div class="search-result" id="searchResult"></div>
+                <div class="search-result" id="searchResult"></div>
+
+            </div>
+
+        </div>
+
+        <div class="topbar-right">
+
+            <a href="dashboard.php" class="topbar-link">
+
+                <div class="topbar-item">
+
+                    <img src="../../assets/icons/dashboard.png" class="topbar-icon">
+                    <span>Dashboard</span>
+
+                </div>
+
+            </a>
+
+            <a href="manage_rooms.php" class="topbar-link">
+
+                <div class="topbar-item">
+
+                    <img src="../../assets/icons/room-booking.png" class="topbar-icon">
+                    <span>Manage Rooms</span>
+
+                </div>
+
+            </a>
+
+            <a href="manage_resource.php" class="topbar-link">
+
+                <div class="topbar-item">
+
+                    <img src="../../assets/icons/manage-resource.png" class="topbar-icon">
+                    <span>Manage Resource</span>
+
+                </div>
+
+            </a>
+
+            <a href="view_activity.php" class="topbar-link active">
+
+                <div class="topbar-item">
+
+                    <img src="../../assets/icons/view-report.png" class="topbar-icon">
+                    <span>View Activity</span>
+
+                </div>
+
+            </a>
 
         </div>
 
     </div>
 
-    <div class="topbar-right">
+    <div class="container">
 
-        <a href="dashboard.php" class="topbar-link">
+        <!-- Header -->
+        <div class="page-header">
 
-            <div class="topbar-item">
+            <h1>View Activity</h1>
 
-                <img src="../../assets/icons/dashboard.png" class="topbar-icon">
-                <span>Dashboard</span>
+            <p>Requests and Reports overview</p>
 
-            </div>
+        </div>
 
-        </a>
+        <!-- Dashboard Cards -->
+        <div class="activity-cards">
 
-        <a href="manage_rooms.php" class="topbar-link">
+            <div class="activity-card request-card">
 
-            <div class="topbar-item">
+                <h3>Pending Requests</h3>
 
-                <img src="../../assets/icons/room-booking.png" class="topbar-icon">
-                <span>Manage Rooms</span>
-
-            </div>
-
-        </a>
-
-        <a href="#" class="topbar-link">
-
-            <div class="topbar-item">
-
-                <img src="../../assets/icons/manage-resource.png" class="topbar-icon">
-                <span>Manage Resource</span>
+                <div class="dashboard-number">
+                    <?php echo $requestCount; ?>
+                </div>
 
             </div>
 
-        </a>
+            <div class="activity-card report-card">
 
-        <a href="view_activity.php" class="topbar-link active">
+                <h3>Pending Reports</h3>
 
-            <div class="topbar-item">
+                <div class="dashboard-number">
+                    <?php echo $reportCount; ?>
+                </div>
 
-                <img src="../../assets/icons/view-report.png" class="topbar-icon">
-                <span>View Activity</span>
-
-            </div>
-
-        </a>
-
-    </div>
-
-</div>
-
-<div class="container">
-
-    <!-- Header -->
-    <div class="page-header">
-
-        <h1>View Activity</h1>
-
-        <p>Requests and Reports overview</p>
-
-    </div>
-
-    <!-- Dashboard Cards -->
-    <div class="activity-cards">
-
-        <div class="activity-card request-card">
-
-            <h3>Pending Requests</h3>
-
-            <div class="dashboard-number">
-                <?php echo $requestCount; ?>
             </div>
 
         </div>
 
-        <div class="activity-card report-card">
+        <!-- Tabs -->
+        <div class="tab-buttons">
 
-            <h3>Pending Reports</h3>
+            <button class="tab-btn active" onclick="openTab(event, 'requests')">
+                Requests
+            </button>
 
-            <div class="dashboard-number">
-                <?php echo $reportCount; ?>
-            </div>
+            <button class="tab-btn" onclick="openTab(event, 'reports')">
+                Reports
+            </button>
+
+        </div>
+
+        <!-- Request Tab -->
+        <div id="requests" class="tab-content active">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Room</th>
+                        <th>Booking ID</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                <?php while($r = $requestResult->fetch_assoc()) { ?>
+
+                    <?php
+                        $statusClass = "";
+
+                        if($r['status'] == "Pending")
+                        {
+                            $statusClass = "status-pending";
+                        }
+                        elseif($r['status'] == "In Progress")
+                        {
+                            $statusClass = "status-in-progress";
+                        } else
+                        {
+                            $statusClass = "status-default";
+                        }
+                    ?>
+
+                    <tr>
+
+                        <td>
+                            <?php echo htmlspecialchars($r['room_name']); ?>
+                        </td>
+
+                        <td>
+                            <?php echo $r['booking_id']; ?>
+                        </td>
+
+                        <td>
+                            <?php echo htmlspecialchars($r['request_type']); ?>
+                        </td>
+
+                        <td>
+
+                            <span class="status-badge <?php echo $statusClass; ?>">
+
+                                <?php echo $r['status']; ?>
+
+                            </span>
+
+                        </td>
+
+                        <td>
+                            <?php echo $r['created_at']; ?>
+                        </td>
+
+                        <td>
+
+                            <a href="../view_activity/view_request_detail.php?id=<?php echo $r['request_id']; ?>" class="view-btn">
+
+                                View
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                <?php } ?>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- Report Tab -->
+        <div id="reports" class="tab-content">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Room</th>
+                        <th>Booking ID</th>
+                        <th>Issue Type</th>
+                        <th>Severity</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                <?php while($r = $reportResult->fetch_assoc()) { ?>
+
+                    <?php
+
+                        /* Severity Badge */
+                        $severityClass = "";
+
+                        if($r['severity'] == "High")
+                        {
+                            $severityClass = "severity-high";
+                        }
+                        elseif($r['severity'] == "Medium")
+                        {
+                            $severityClass = "severity-medium";
+                        }
+                        else
+                        {
+                            $severityClass = "severity-low";
+                        }
+
+                        /* Status Badge */
+                        $statusClass = "";
+
+                        if($r['status'] == "Pending")
+                        {
+                            $statusClass = "status-pending";
+                        }
+                        elseif($r['status'] == "In Progress")
+                        {
+                            $statusClass = "status-in-progress";
+                        }
+                        else
+                        {
+                            $statusClass = "status-default";
+                        }
+
+                    ?>
+
+                    <tr>
+
+                        <td>
+                            <?php echo htmlspecialchars($r['room_name']); ?>
+                        </td>
+
+                        <td>
+                            <?php echo $r['booking_id']; ?>
+                        </td>
+
+                        <td>
+                            <?php echo htmlspecialchars($r['issue_type']); ?>
+                        </td>
+
+                        <td>
+
+                            <span class="severity-badge <?php echo $severityClass; ?>">
+
+                                <?php echo $r['severity']; ?>
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="status-badge <?php echo $statusClass; ?>">
+
+                                <?php echo $r['status']; ?>
+
+                            </span>
+
+                        </td>
+
+                        <td>
+                            <?php echo $r['created_at']; ?>
+                        </td>
+
+                        <td>
+
+                            <a href="../view_activity/view_report_detail.php?id=<?php echo $r['report_id']; ?>" class="view-btn">
+
+                                View
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                <?php } ?>
+
+                </tbody>
+
+            </table>
 
         </div>
 
     </div>
-
-    <!-- Tabs -->
-    <div class="tab-buttons">
-
-        <button class="tab-btn active" onclick="openTab(event, 'requests')">
-            Requests
-        </button>
-
-        <button class="tab-btn" onclick="openTab(event, 'reports')">
-            Reports
-        </button>
-
-    </div>
-
-    <!-- Request Tab -->
-    <div id="requests" class="tab-content active">
-
-        <table>
-
-            <thead>
-
-                <tr>
-
-                    <th>Room</th>
-                    <th>Booking ID</th>
-                    <th>Type</th>
-                    <th>Status</th>
-                    <th>Date</th>
-                    <th>Action</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-            <?php while($r = $requestResult->fetch_assoc()) { ?>
-
-                <?php
-                    $statusClass = "";
-
-                    if($r['status'] == "Pending")
-                    {
-                        $statusClass = "status-pending";
-                    }
-                    elseif($r['status'] == "In Progress")
-                    {
-                        $statusClass = "status-in-progress";
-                    } else
-                    {
-                        $statusClass = "status-default";
-                    }
-                ?>
-
-                <tr>
-
-                    <td>
-                        <?php echo htmlspecialchars($r['room_name']); ?>
-                    </td>
-
-                    <td>
-                        <?php echo $r['booking_id']; ?>
-                    </td>
-
-                    <td>
-                        <?php echo htmlspecialchars($r['request_type']); ?>
-                    </td>
-
-                    <td>
-
-                        <span class="status-badge <?php echo $statusClass; ?>">
-
-                            <?php echo $r['status']; ?>
-
-                        </span>
-
-                    </td>
-
-                    <td>
-                        <?php echo $r['created_at']; ?>
-                    </td>
-
-                    <td>
-
-                        <a href="view_request_detail.php?id=<?php echo $r['request_id']; ?>" class="view-btn">
-
-                            View
-
-                        </a>
-
-                    </td>
-
-                </tr>
-
-            <?php } ?>
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-    <!-- Report Tab -->
-    <div id="reports" class="tab-content">
-
-        <table>
-
-            <thead>
-
-                <tr>
-
-                    <th>Room</th>
-                    <th>Booking ID</th>
-                    <th>Issue Type</th>
-                    <th>Severity</th>
-                    <th>Status</th>
-                    <th>Date</th>
-                    <th>Action</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-            <?php while($r = $reportResult->fetch_assoc()) { ?>
-
-                <?php
-
-                    /* Severity Badge */
-                    $severityClass = "";
-
-                    if($r['severity'] == "High")
-                    {
-                        $severityClass = "severity-high";
-                    }
-                    elseif($r['severity'] == "Medium")
-                    {
-                        $severityClass = "severity-medium";
-                    }
-                    else
-                    {
-                        $severityClass = "severity-low";
-                    }
-
-                    /* Status Badge */
-                    $statusClass = "";
-
-                    if($r['status'] == "Pending")
-                    {
-                        $statusClass = "status-pending";
-                    }
-                    elseif($r['status'] == "In Progress")
-                    {
-                        $statusClass = "status-in-progress";
-                    }
-                    else
-                    {
-                        $statusClass = "status-default";
-                    }
-
-                ?>
-
-                <tr>
-
-                    <td>
-                        <?php echo htmlspecialchars($r['room_name']); ?>
-                    </td>
-
-                    <td>
-                        <?php echo $r['booking_id']; ?>
-                    </td>
-
-                    <td>
-                        <?php echo htmlspecialchars($r['issue_type']); ?>
-                    </td>
-
-                    <td>
-
-                        <span class="severity-badge <?php echo $severityClass; ?>">
-
-                            <?php echo $r['severity']; ?>
-
-                        </span>
-
-                    </td>
-
-                    <td>
-
-                        <span class="status-badge <?php echo $statusClass; ?>">
-
-                            <?php echo $r['status']; ?>
-
-                        </span>
-
-                    </td>
-
-                    <td>
-                        <?php echo $r['created_at']; ?>
-                    </td>
-
-                    <td>
-
-                        <a href="view_report_detail.php?id=<?php echo $r['report_id']; ?>" class="view-btn">
-
-                            View
-
-                        </a>
-
-                    </td>
-
-                </tr>
-
-            <?php } ?>
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-</div>
 
 </body>
 
@@ -413,7 +413,7 @@ const pages = [
     },
     {
         name: "Manage Resource",
-        link: "#"
+        link: "manage_resource.php"
     },
     {
         name: "View Activity",

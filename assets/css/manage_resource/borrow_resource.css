@@ -1,0 +1,51 @@
+.container{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    padding:40px;
+}
+
+.borrow-form{
+    width:100%;
+    max-width:600px;
+    background:#1a1a1a;
+    padding:30px;
+    border-radius:16px;
+    box-shadow:0 0 20px rgba(0,0,0,0.3);
+}
+
+.borrow-form label{
+    display:block;
+    margin-top:15px;
+    margin-bottom:6px;
+    color:#d1d5db;
+}
+
+.borrow-form input,
+.borrow-form select{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#262626;
+    color:white;
+    outline:none;
+}
+
+.borrow-form button{
+    margin-top:20px;
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    background:#16a34a;
+    color:white;
+    font-weight:700;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.borrow-form button:hover{
+    transform:translateY(-2px);
+    background:#15803d;
+}
