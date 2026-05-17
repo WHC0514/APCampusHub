@@ -1,0 +1,258 @@
+body {
+    background: #0f1115;
+    color: #f5f5f5;
+}
+
+.container {
+    padding: 16px;
+    padding-bottom: 100px;
+    min-height: 100vh;
+    background: #0f1115;
+}
+
+.booking-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 16px;
+}
+
+.booking-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: #171a21;
+    border: 1px solid #252934;
+    border-radius: 18px;
+    padding: 14px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    position: relative;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.booking-card:hover {
+    border-color: #353b49;
+}
+
+.booking-venue-img {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 14px;
+    flex-shrink: 0;
+    background: #20242d;
+    border: 1px solid #2d3442;
+}
+
+.booking-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.booking-info h4 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.35;
+}
+
+.booking-desc {
+    font-size: 12px;
+    color: #8e97ab;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.booking-time {
+    font-size: 12px;
+    color: #c2c8d3;
+    margin: 0;
+}
+
+.booking-time .label {
+    font-weight: 700;
+    color: #ffffff;
+    margin-right: 4px;
+}
+
+.booking-submitted {
+    font-size: 11px;
+    color: #5a6175;
+    margin: 4px 0 0;
+}
+
+.booking-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    align-self: flex-start;
+}
+
+.status-pending {
+    background: rgba(234, 179, 8, 0.15);
+    color: #facc15;
+    border: 1px solid rgba(234, 179, 8, 0.25);
+}
+
+.status-approved {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.22);
+}
+
+.status-canceled,
+.status-rejected {
+    background: rgba(239, 68, 68, 0.14);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.cancel-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+}
+
+.cancel-btn img {
+    width: 20px;
+    height: 20px;
+}
+
+.cancel-btn:hover {
+    background: #2a1a1a;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 46px 20px;
+    border-radius: 18px;
+    border: 1px dashed #343946;
+    background: #171a21;
+    color: #8d96a8;
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 16px;
+}
+
+/* Modal */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-box {
+    background: #1e2230;
+    border: 1px solid #2e3347;
+    border-radius: 16px;
+    padding: 28px 24px;
+    max-width: 340px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+.modal-box h3 {
+    margin: 0 0 10px;
+    font-size: 1.1rem;
+    color: #fff;
+}
+
+.modal-box p {
+    font-size: 0.88rem;
+    color: #9aa3b5;
+    margin-bottom: 22px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.modal-btn {
+    padding: 9px 20px;
+    border-radius: 8px;
+    border: none;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-no {
+    background: #2b303b;
+    color: #ccc;
+}
+
+.btn-no:hover {
+    background: #353b49;
+}
+
+.btn-yes {
+    background: #c0392b;
+    color: #fff;
+}
+
+.btn-yes:hover {
+    background: #a93226;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #111318;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #2d3340;
+    border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #3b4250;
+}
+
+@media (max-width: 480px) {
+    .booking-card {
+        padding: 12px;
+        gap: 12px;
+    }
+
+    .booking-venue-img {
+        width: 76px;
+        height: 76px;
+    }
+
+    .booking-info h4 {
+        font-size: 14px;
+    }
+}

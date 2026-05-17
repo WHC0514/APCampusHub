@@ -139,7 +139,7 @@ while($row = $suggestResult->fetch_assoc())
             </a>
 
             <!-- Events Button -->
-            <a href="#" class="topbar-link">
+            <a href="events.php" class="topbar-link">
                 <div class="topbar-item">
 
                     <img src="../../assets/icons/events.png" alt="Events" class="topbar-icon">
@@ -334,7 +334,7 @@ const pages = [
     },
     {
     name: "Events",
-    link: "#"
+    link: "events.php"
     }
 ];
 

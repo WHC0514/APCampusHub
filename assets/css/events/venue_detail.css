@@ -1,0 +1,114 @@
+.venue-details-container{
+    padding: 160px 40px 40px;
+    display: flex;
+    gap: 40px;
+    color: white;
+}
+
+.venue-left{
+    flex: 1;
+}
+
+.main-venue-image{
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+    border-radius: 20px;
+    transition: 0.3s ease;
+}
+
+.venue-right{
+    flex: 1;
+}
+
+.venue-right h1{
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+.venue-type{
+    display: inline-block;
+    background: #2563eb;
+    padding: 8px 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.venue-description{
+    color: #b3b3b3;
+    margin-bottom: 18px;
+    line-height: 1.7;
+}
+
+.date-picker{
+    width: 100%;
+    padding: 14px;
+    margin-top: 10px;
+    margin-bottom: 25px;
+    background: #1f1f1f;
+    border: 1px solid #333;
+    color: white;
+    border-radius: 10px;
+}
+
+.booking-section{
+    margin-top: 20px;
+}
+
+.booking-section h3{
+    margin-bottom: 15px;
+}
+
+.booking-card{
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+}
+
+.booking-card.booked{
+    background: #7f1d1d;
+}
+
+.booking-card.available{
+    background: #14532d;
+}
+
+.book-now-btn{
+    display: inline-block;
+    margin-top: 30px;
+    padding: 14px 24px;
+    background: #2563eb;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.book-now-btn:hover{
+    background: #1e40af;
+}
+
+.venue-gallery{
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.thumb{
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: 0.3s;
+}
+
+.thumb:hover{
+    opacity: 1;
+}
+
+.thumb.active{
+    border: 2px solid #2563eb;
+    opacity: 1;
+}

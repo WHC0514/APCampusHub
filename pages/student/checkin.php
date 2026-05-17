@@ -48,11 +48,8 @@ $result = $stmt->get_result();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport"content="width=device-width, initial-scale=1.0">
     <title>APCampusHub</title>
 
     <link rel="stylesheet" href="../../assets/css/general.css">
@@ -111,7 +108,7 @@ $result = $stmt->get_result();
             </a>
 
             <!-- Events Button -->
-            <a href="#" class="topbar-link">
+            <a href="events.php" class="topbar-link">
                 <div class="topbar-item">
 
                     <img src="../../assets/icons/events.png" alt="Events" class="topbar-icon">
@@ -356,7 +353,7 @@ const pages = [
     },
     {
     name: "Events",
-    link: "#"
+    link: "events.php"
     }
 ];
 

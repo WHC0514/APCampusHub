@@ -105,7 +105,7 @@ if($stmt)
             </a>
 
             <!-- Events Button -->
-            <a href="#" class="topbar-link">
+            <a href="events.php" class="topbar-link">
                 <div class="topbar-item">
 
                     <img src="../../assets/icons/events.png" alt="Events" class="topbar-icon">
@@ -311,7 +311,7 @@ if($stmt)
                         venue availability, and announcements.
                     </p>
 
-                    <button class="primary-btn" onclick="location.href='#'">
+                    <button class="primary-btn" onclick="location.href='events.php'">
 
                         Explore
 
@@ -366,7 +366,7 @@ const pages = [
     },
     {
     name: "Events",
-    link: "#"
+    link: "events.php"
     }
 ];
 
