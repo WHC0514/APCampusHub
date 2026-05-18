@@ -12,6 +12,14 @@ if(!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || !in_array($_SESS
 
 $role = $_SESSION['role'] ?? 'student';
 
+function fail($msg, $redirect) {
+    echo "<script>
+        alert('$msg');
+        window.location.href = '../student/room_booking.php';
+    </script>";
+    exit();
+}
+
 $room_booking = ($role === "lecturer")
     ? "../lecturer/room_booking.php"
     : "../student/room_booking.php";
@@ -27,37 +35,37 @@ $endTime   = $_POST['end_time']    ?? '';
 
 // Basic presence check
 if(!$roomID || !$date || !$startTime || !$endTime) {
-    die("Missing booking details. Please go back and try again.");
+    fail("Missing booking details. Please go back and try again.");
 }
 
 // Validate date format
 if(!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
-    die("Invalid date format.");
+    fail("Invalid date format.");
 }
 
 // Reject past dates
 if($date < date("Y-m-d")) {
-    die("You cannot book a room for a past date.");
+    fail("You cannot book a room for a past date.");
 }
 
 // Validate time format
 if(!preg_match('/^\d{2}:\d{2}$/', $startTime) || !preg_match('/^\d{2}:\d{2}$/', $endTime)) {
-    die("Invalid time format.");
+    fail("Invalid time format.");
 }
 
 // End must be after start
 if($startTime >= $endTime) {
-    die("End time must be after start time.");
+    fail("End time must be after start time.");
 }
 
 // Operating hours: 08:00 to 22:00
 if($startTime < "08:00" || $endTime > "22:00") {
-    die("Booking must be within operating hours (8:00 AM - 10:00 PM).");
+    fail("Booking must be within operating hours (8:00 AM - 10:00 PM).");
 }
 
 // For today, start time must not be in the past
 if($date == date("Y-m-d") && $startTime < date("H:i")) {
-    die("Start time has already passed.");
+    fail("Start time has already passed.");
 }
 
 // Reject if any approved booking overlaps with the requested slot
@@ -67,7 +75,7 @@ $stmt->execute();
 $result = $stmt->get_result()->fetch_assoc();
 
 if($result['conflicts'] > 0) {
-    die("This time slot has already been booked. Please go back and choose another time.");
+    fail("This time slot has already been booked. Please go back and choose another time.");
 }
 
 // Insert booking
@@ -107,7 +115,7 @@ if($stmt->execute()) {
 <?php
     exit();
 } else {
-    die("Something went wrong while saving your booking. Please try again.");
+    fail("Something went wrong while saving your booking. Please try again.");
 }
 
 ?>
