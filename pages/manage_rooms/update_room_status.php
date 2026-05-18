@@ -116,6 +116,66 @@ if($res->num_rows > 0) {
     $stmt->execute();
 }
 
+/* If room becomes unavailable, cancel future approved bookings */
+if($roomStatus === "Maintenance" || $roomStatus === "Inactive")
+{
+    $currentDate = date("Y-m-d");
+    $currentTime = date("H:i:s");
+
+    /* Get room name */
+    $stmtRoom = $conn->prepare("SELECT room_name FROM room WHERE room_id = ? LIMIT 1");
+
+    $stmtRoom->bind_param("i", $roomID);
+    $stmtRoom->execute();
+
+    $roomData = $stmtRoom->get_result()->fetch_assoc();
+
+    $roomName = $roomData['room_name'] ?? 'Room';
+
+    /* Get all future approved bookings */
+    $stmtBooking = $conn->prepare("SELECT booking_id, user_id, booking_date, start_time FROM room_booking WHERE room_id = ? AND booking_status = 'Approved'
+        AND (
+            booking_date > ?
+            OR (
+                booking_date = ?
+                AND start_time > ?
+            )
+        )
+    ");
+
+    $stmtBooking->bind_param("isss", $roomID, $currentDate, $currentDate, $currentTime);
+
+    $stmtBooking->execute();
+
+    $bookingResult = $stmtBooking->get_result();
+
+    while($booking = $bookingResult->fetch_assoc())
+    {
+        $bookingID = $booking['booking_id'];
+        $bookUserID = $booking['user_id'];
+
+        /* Cancel booking */
+        $stmtCancel = $conn->prepare("UPDATE room_booking SET booking_status = 'Canceled' WHERE booking_id = ?");
+
+        $stmtCancel->bind_param("i", $bookingID);
+        $stmtCancel->execute();
+
+        /* Notification title */
+        $title = "Room Booking Canceled";
+
+        /* Notification message */
+        $message = "Your booking for " . $roomName . " has been canceled because the room is now under " . strtolower($roomStatus) . ".";
+
+        /* Send notification */
+        $stmtNotif = $conn->prepare("INSERT INTO notification (user_id, title, message, is_read, created_at)
+            VALUES (?, ?, ?, 0, NOW())");
+
+        $stmtNotif->bind_param("iss", $bookUserID, $title, $message);
+
+        $stmtNotif->execute();
+    }
+}
+
 /* Success */
 echo "<script>
     alert('Room status updated successfully!');

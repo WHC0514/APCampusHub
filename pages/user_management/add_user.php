@@ -21,7 +21,7 @@ require_once("../../config/db.php");
 
     <link rel="stylesheet" href="../../assets/css/general.css">
     <link rel="stylesheet" href="../../assets/css/profile.css">
-    <link rel="stylesheet" href="../../assets/css/admin/add_user.css">
+    <link rel="stylesheet" href="../../assets/css/user_management/add_user.css">
 </head>
 <body>
 
@@ -31,7 +31,7 @@ require_once("../../config/db.php");
         <div class="profile-topbar-left">
 
             <!-- Back Button -->
-            <a href="user_management.php" class="back-btn">
+            <a href="../admin/user_management.php" class="back-btn">
 
                 <img src="../../assets/icons/back.png" alt="Back" class="back-icon">
 
@@ -171,7 +171,7 @@ require_once("../../config/db.php");
             <!-- Button -->
             <div class="btn-group">
 
-                <a href="user_management.php" class="cancel-btn">
+                <a href="../admin/user_management.php" class="cancel-btn">
                     Cancel
                 </a>
 

@@ -301,10 +301,7 @@ document.addEventListener("click", function(e){
 
 });
 
-</script>
-
 <!-- Venue Search -->
-<script>
 
 const venues = <?php echo json_encode($suggestionVenues); ?>;
 

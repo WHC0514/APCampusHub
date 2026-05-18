@@ -18,7 +18,7 @@ if(!isset($_GET['user_id']))
 {
     echo "<script>
         alert('Missing user ID.');
-        window.location.href='user_management.php';
+        window.location.href='../admin/user_management.php';
     </script>";
     exit();
 }
@@ -26,12 +26,7 @@ if(!isset($_GET['user_id']))
 $userID = intval($_GET['user_id']);
 
 /* Get user role */
-$sqlUser = "
-SELECT *
-FROM user
-WHERE user_id = ?
-LIMIT 1
-";
+$sqlUser = "SELECT * FROM user WHERE user_id = ? LIMIT 1";
 
 $stmt = $conn->prepare($sqlUser);
 $stmt->bind_param("i", $userID);
@@ -43,7 +38,7 @@ if($userResult->num_rows == 0)
 {
     echo "<script>
         alert('User not found.');
-        window.location.href='user_management.php';
+        window.location.href='../admin/user_management.php';
     </script>";
     exit();
 }
@@ -74,7 +69,7 @@ switch($role)
     default:
         echo "<script>
             alert('Invalid role.');
-            window.location.href='user_management.php';
+            window.location.href='../admin/user_management.php';
         </script>";
         exit();
 }
@@ -111,7 +106,7 @@ if($result->num_rows == 0)
 {
     echo "<script>
         alert('User profile not found.');
-        window.location.href='user_management.php';
+        window.location.href='../admin/user_management.php';
     </script>";
     exit();
 }
@@ -137,7 +132,7 @@ if(!empty($user['profile_photo']))
 
     <link rel="stylesheet" href="../../assets/css/general.css">
     <link rel="stylesheet" href="../../assets/css/profile.css">
-    <link rel="stylesheet" href="../../assets/css/admin/edit_user.css">
+    <link rel="stylesheet" href="../../assets/css/user_management/edit_user.css">
 </head>
 <body>
 
@@ -147,7 +142,7 @@ if(!empty($user['profile_photo']))
         <div class="profile-topbar-left">
 
             <!-- Back Button -->
-            <a href="user_management.php" class="back-btn">
+            <a href="../admin/user_management.php" class="back-btn">
 
                 <img src="../../assets/icons/back.png" alt="Back" class="back-icon">
 
@@ -290,7 +285,7 @@ if(!empty($user['profile_photo']))
             <!-- Buttons -->
             <div class="btn-group">
 
-                <a href="user_management.php" class="cancel-btn">
+                <a href="../admin/user_management.php" class="cancel-btn">
                     Cancel
                 </a>
 

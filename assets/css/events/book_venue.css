@@ -6,7 +6,6 @@
     gap: 24px;
 }
 
-/* VENUE CARD */
 .venue-card{
     background: #1a1a1a;
     border: 1px solid #2c2c2c;
@@ -28,7 +27,6 @@
     margin-bottom: 10px;
 }
 
-/* SECTION */
 .section{
     background: #1a1a1a;
     border: 1px solid #2c2c2c;
@@ -41,7 +39,6 @@
     margin-bottom: 12px;
 }
 
-/* INPUT */
 input[type="datetime-local"],
 textarea{
     width: 100%;
@@ -58,7 +55,6 @@ textarea{
     resize: none;
 }
 
-/* SLOT */
 #slotBox{
     margin-top: 10px;
 }
@@ -72,7 +68,6 @@ textarea{
     color: white;
 }
 
-/* BUTTON */
 .btn{
     width: 100%;
     padding: 16px;

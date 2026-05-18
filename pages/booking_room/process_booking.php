@@ -1,5 +1,7 @@
 <?php
+
 session_start();
+
 date_default_timezone_set("Asia/Kuala_Lumpur");
 
 if(!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || !in_array($_SESSION['role'], ["student", "lecturer"]))
@@ -17,7 +19,6 @@ $room_booking = ($role === "lecturer")
 require_once("../../config/db.php");
 
 // Validate incoming data
-
 $userID    = $_SESSION['user_id'];
 $roomID    = intval($_POST['room_id']    ?? 0);
 $date      = $_POST['date']        ?? '';
@@ -60,7 +61,6 @@ if($date == date("Y-m-d") && $startTime < date("H:i")) {
 }
 
 // Reject if any approved booking overlaps with the requested slot
-
 $stmt = $conn->prepare("SELECT COUNT(*) as conflicts FROM room_booking WHERE room_id = ? AND booking_date = ? AND booking_status = 'Approved' AND start_time < ? AND end_time > ?");
 $stmt->bind_param("isss", $roomID, $date, $endTime, $startTime);
 $stmt->execute();
@@ -71,11 +71,34 @@ if($result['conflicts'] > 0) {
 }
 
 // Insert booking
-
 $stmt = $conn->prepare("INSERT INTO room_booking (room_id, user_id, booking_date, start_time, end_time) VALUES (?, ?, ?, ?, ?)");
 $stmt->bind_param("iisss", $roomID, $userID, $date, $startTime, $endTime);
 
 if($stmt->execute()) {
+
+    /* Get room name */
+    $roomName = "Room";
+
+    $stmtRoom = $conn->prepare("SELECT room_name FROM room WHERE room_id = ?");
+    $stmtRoom->bind_param("i", $roomID);
+    $stmtRoom->execute();
+    $roomResult = $stmtRoom->get_result();
+
+    if($row = $roomResult->fetch_assoc()) {
+        $roomName = $row['room_name'];
+    }
+
+    /* Create notification */
+    $title = "Booking Room Successful";
+    $message = "Your booking for " . $roomName . " is successful, please check in to the room in 30 minutes after the booking start time or else your booking will be auto canceled by the system.";
+
+    $stmtNotif = $conn->prepare("INSERT INTO notification (user_id, title, message, is_read, created_at)
+        VALUES (?, ?, ?, 0, NOW())");
+
+    $stmtNotif->bind_param("iss", $userID, $title, $message);
+    $stmtNotif->execute();
+
+    /* Success response */
 ?>
 <script>
     alert("Booking successful!");
@@ -86,4 +109,5 @@ if($stmt->execute()) {
 } else {
     die("Something went wrong while saving your booking. Please try again.");
 }
+
 ?>

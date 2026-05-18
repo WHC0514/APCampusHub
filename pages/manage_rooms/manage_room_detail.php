@@ -55,7 +55,7 @@ if($roomResult->num_rows == 0)
 
 $room = $roomResult->fetch_assoc();
 
-/* LIVE STATUS (NEW - ADDED ONLY) */
+/* Live Status */
 $sqlStatus = "SELECT status FROM room_status WHERE room_id = ? LIMIT 1";
 $stmtStatus = $conn->prepare($sqlStatus);
 $stmtStatus->bind_param("i", $roomID);
@@ -67,7 +67,7 @@ $roomMainStatus = $room['status'];
 
 if($roomMainStatus === "Maintenance" || $roomMainStatus === "Inactive") {
 
-    // Direct override (highest priority)
+    // Direct override
     $liveStatus = $roomMainStatus;
 
 } else {
@@ -336,8 +336,8 @@ function changeImage(el)
     el.classList.add("active");
 }
 
-const datePicker    = document.getElementById("datePicker");
-const todayStr      = "<?php echo date('Y-m-d'); ?>";
+const datePicker = document.getElementById("datePicker");
+const todayStr = "<?php echo date('Y-m-d'); ?>";
 let dateEnterPressed = false;
 
 function submitDate() {

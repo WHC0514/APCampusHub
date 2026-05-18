@@ -52,12 +52,7 @@ $venueResult = $stmtVenue->get_result();
 /* Search suggestion */
 $suggestionVenues = [];
 
-$suggestSql = "
-SELECT venue_id, venue_name, description
-FROM event_venue
-WHERE status = 'Active'
-LIMIT 20
-";
+$suggestSql = "SELECT venue_id, venue_name, description FROM event_venue WHERE status = 'Active' LIMIT 20";
 
 $suggestResult = $conn->query($suggestSql);
 
@@ -73,7 +68,7 @@ while($row = $suggestResult->fetch_assoc())
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APCampusHub Events</title>
+    <title>APCampusHub</title>
 
     <link rel="stylesheet" href="../../assets/css/general.css">
     <link rel="stylesheet" href="../../assets/css/student/events.css">
@@ -81,160 +76,159 @@ while($row = $suggestResult->fetch_assoc())
 
 <body>
 
-<!-- Topbar -->
-<div class="topbar">
+    <!-- Topbar -->
+    <div class="topbar">
 
-    <div class="topbar-left">
+        <div class="topbar-left">
 
-        <img src="../../assets/images/app-logo.png" class="topbar-logo">
+            <img src="../../assets/images/app-logo.png" class="topbar-logo">
 
-        <div class="search-container">
+            <div class="search-container">
 
-            <input type="text" class="search-bar" id="searchInput" placeholder="Search APCampusHub">
+                <input type="text" class="search-bar" id="searchInput" placeholder="Search APCampusHub">
 
-            <div class="search-result" id="searchResult"></div>
+                <div class="search-result" id="searchResult"></div>
+
+            </div>
 
         </div>
 
-    </div>
+        <div class="topbar-right">
 
-    <div class="topbar-right">
+            <a href="dashboard.php" class="topbar-link">
+                <div class="topbar-item">
 
-        <a href="dashboard.php" class="topbar-link">
-            <div class="topbar-item">
+                    <img src="../../assets/icons/dashboard.png" class="topbar-icon">
+                    <span>Dashboard</span>
 
-                <img src="../../assets/icons/dashboard.png" class="topbar-icon">
-                <span>Dashboard</span>
+                </div>
+            </a>
 
-            </div>
-        </a>
+            <a href="room_booking.php" class="topbar-link">
+                <div class="topbar-item">
 
-        <a href="room_booking.php" class="topbar-link">
-            <div class="topbar-item">
+                    <img src="../../assets/icons/room-booking.png" class="topbar-icon">
+                    <span>Room Booking</span>
 
-                <img src="../../assets/icons/room-booking.png" class="topbar-icon">
-                <span>Room Booking</span>
+                </div>
+            </a>
 
-            </div>
-        </a>
+            <a href="../check_inout/room_check_redirect.php" class="topbar-link">
+                <div class="topbar-item">
 
-        <a href="../check_inout/room_check_redirect.php" class="topbar-link">
-            <div class="topbar-item">
+                    <img src="../../assets/icons/check-in.png" class="topbar-icon">
+                    <span>Check In/Out</span>
 
-                <img src="../../assets/icons/check-in.png" class="topbar-icon">
-                <span>Check In/Out</span>
+                </div>
+            </a>
 
-            </div>
-        </a>
+            <a href="events.php" class="topbar-link active">
+                <div class="topbar-item">
 
-        <a href="events.php" class="topbar-link active">
-            <div class="topbar-item">
+                    <img src="../../assets/icons/events.png" class="topbar-icon">
+                    <span>Events</span>
 
-                <img src="../../assets/icons/events.png" class="topbar-icon">
-                <span>Events</span>
-
-            </div>
-        </a>
-
-    </div>
-</div>
-
-<!-- Filter/Search -->
-<div class="event-filter-section">
-
-    <form method="GET" class="filter-form">
-
-        <div class="venue-search-wrapper">
-
-            <input type="text" name="search" id="venueSearchInput" class="venue-search" placeholder="Search venue..." value="<?php echo htmlspecialchars($search); ?>" autocomplete="off">
-
-            <div id="venueSearchResult" class="venue-search-result"></div>
+                </div>
+            </a>
 
         </div>
+    </div>
 
-        <button type="submit" class="search-btn">
-            Search
-        </button>
+    <!-- Filter/Search -->
+    <div class="event-filter-section">
 
-        <a href="../events/my_bookings.php" class="my-bookings-btn">
-            My Bookings
-        </a>
+        <form method="GET" class="filter-form">
 
-    </form>
+            <div class="venue-search-wrapper">
 
-</div>
+                <input type="text" name="search" id="venueSearchInput" class="venue-search" placeholder="Search venue..." value="<?php echo htmlspecialchars($search); ?>" autocomplete="off">
 
-<!-- Content -->
-<div class="event-content">
+                <div id="venueSearchResult" class="venue-search-result"></div>
 
-    <div class="event-grid">
+            </div>
 
-        <?php
+            <button type="submit" class="search-btn">
+                Search
+            </button>
 
-        if($venueResult->num_rows > 0)
-        {
-            while($venue = $venueResult->fetch_assoc())
+            <a href="../events/my_bookings.php" class="my-bookings-btn">
+                My Bookings
+            </a>
+
+        </form>
+
+    </div>
+
+    <!-- Content -->
+    <div class="event-content">
+
+        <div class="event-grid">
+
+            <?php
+
+            if($venueResult->num_rows > 0)
             {
-                $venueImage = "../../uploads/event/default-venue.jpg";
-
-                if(!empty($venue['cover_image']))
+                while($venue = $venueResult->fetch_assoc())
                 {
-                    $venueImage = "../../uploads/event/" . $venue['cover_image'];
-                }
+                    $venueImage = "../../uploads/event/default-venue.jpg";
 
-                ?>
+                    if(!empty($venue['cover_image']))
+                    {
+                        $venueImage = "../../uploads/event/" . $venue['cover_image'];
+                    }
 
-                <div class="event-card">
+                    ?>
 
-                    <img src="<?php echo $venueImage; ?>" class="event-image">
+                    <div class="event-card">
 
-                    <div class="venue-info">
+                        <img src="<?php echo $venueImage; ?>" class="event-image">
 
-                        <h2>
-                            <?php echo $venue['venue_name']; ?>
-                        </h2>
+                        <div class="venue-info">
 
-                        <div class="venue-badge">
-                            Event Venue
-                        </div>
+                            <h2>
+                                <?php echo $venue['venue_name']; ?>
+                            </h2>
 
-                        <p class="venue-description">
-                            <?php echo $venue['description']; ?>
-                        </p>
+                            <div class="venue-badge">
+                                Event Venue
+                            </div>
 
-                        <div class="venue-btn-group">
+                            <p class="venue-description">
+                                <?php echo $venue['description']; ?>
+                            </p>
 
-                            <a href="../events/venue_detail.php?venue_id=<?php echo $venue['venue_id']; ?>" class="view-btn">
-                                View Details
-                            </a>
+                            <div class="venue-btn-group">
 
-                            <a href="../events/book_venue.php?venue_id=<?php echo $venue['venue_id']; ?>" class="book-btn">
-                                Book Now
-                            </a>
+                                <a href="../events/venue_detail.php?venue_id=<?php echo $venue['venue_id']; ?>" class="view-btn">
+                                    View Details
+                                </a>
+
+                                <a href="../events/book_venue.php?venue_id=<?php echo $venue['venue_id']; ?>" class="book-btn">
+                                    Book Now
+                                </a>
+
+                            </div>
 
                         </div>
 
                     </div>
 
+                    <?php
+                }
+            } else
+            {
+                echo '
+                <div class="no-venue">
+                    No venues found
                 </div>
-
-                <?php
+                ';
             }
-        }
-        else
-        {
-            echo '
-            <div class="no-venue">
-                No venues found
-            </div>
-            ';
-        }
 
-        ?>
+            ?>
+
+        </div>
 
     </div>
-
-</div>
 
 </body>
 
@@ -320,11 +314,7 @@ document.addEventListener("click", function(e){
 
 });
 
-</script>
-
 <!-- Venue Search -->
-<script>
-
 const venues = <?php echo json_encode($suggestionVenues); ?>;
 
 const input = document.getElementById("venueSearchInput");

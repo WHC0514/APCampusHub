@@ -153,7 +153,6 @@ body {
     margin-top: 16px;
 }
 
-/* Modal */
 .modal-overlay {
     display: none;
     position: fixed;

@@ -16,7 +16,6 @@ $type = $_POST['type'];
 $value = $_POST['value'];
 
 /* Projector */
-
 if($type == "projector")
 {
     $sql = "UPDATE room_iot_state SET projector = ? WHERE room_id = ?";
@@ -31,7 +30,6 @@ if($type == "projector")
 }
 
 /* Light */
-
 if($type == "light")
 {
     $brightness = intval($value);
@@ -48,7 +46,6 @@ if($type == "light")
 }
 
 /* Aircond */
-
 if($type == "ac")
 {
     $temp = intval($value);

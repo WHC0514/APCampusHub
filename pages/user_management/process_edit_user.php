@@ -199,7 +199,7 @@ if(!$stmt->execute())
 /* Success */
 echo "<script>
     alert('User updated successfully!');
-    window.location.href='user_management.php';
+    window.location.href='../admin/user_management.php';
 </script>";
 
 exit();

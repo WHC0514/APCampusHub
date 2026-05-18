@@ -17,6 +17,69 @@ date_default_timezone_set("Asia/Kuala_Lumpur");
 $currentDate = date("Y-m-d");
 $currentTime = time();
 
+
+/* AUTO CANCEL overdue bookings (30 mins no check in) */
+
+/* Get all approved bookings for this user today */
+$autoCancelSql = "
+SELECT 
+    rb.booking_id,
+    rb.room_id,
+    rb.start_time,
+    r.room_name
+FROM room_booking rb
+INNER JOIN room r ON rb.room_id = r.room_id
+WHERE rb.user_id = ?
+AND rb.booking_status = 'Approved'
+AND rb.booking_date = ?
+";
+
+$stmtAuto = $conn->prepare($autoCancelSql);
+$stmtAuto->bind_param("is", $userID, $currentDate);
+$stmtAuto->execute();
+
+$autoResult = $stmtAuto->get_result();
+
+while($auto = $autoResult->fetch_assoc())
+{
+    $bookingStart = strtotime(
+        $currentDate . " " . $auto['start_time']
+    );
+
+    /* 30 mins after booking start */
+    $cancelTime = $bookingStart + 1800;
+
+    /* If already passed 30 mins */
+    if($currentTime > $cancelTime)
+    {
+        $bookingID = $auto['booking_id'];
+
+        /* Cancel booking */
+        $stmtCancel = $conn->prepare("UPDATE room_booking SET booking_status = 'Canceled' WHERE booking_id = ? AND booking_status = 'Approved'");
+
+        $stmtCancel->bind_param("i", $bookingID);
+        $stmtCancel->execute();
+
+        /* Only send notification if update success */
+        if($stmtCancel->affected_rows > 0)
+        {
+            $title = "Room Booking Auto Canceled";
+
+            $message = "Your booking for " .
+                $auto['room_name'] .
+                " was automatically canceled because you did not check in within 30 minutes after the booking start time.";
+
+            /* Insert notification */
+            $stmtNotif = $conn->prepare("INSERT INTO notification (user_id, title, message, is_read, created_at)
+                VALUES (?, ?, ?, 0, NOW())");
+
+            $stmtNotif->bind_param("iss", $userID, $title, $message);
+
+            $stmtNotif->execute();
+        }
+    }
+}
+
 /* Get upcoming bookings */
 $sql = "SELECT 
     rb.booking_id,
@@ -48,11 +111,8 @@ $result = $stmt->get_result();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APCampusHub</title>
 
     <link rel="stylesheet" href="../../assets/css/general.css">

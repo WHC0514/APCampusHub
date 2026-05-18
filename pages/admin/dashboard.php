@@ -134,15 +134,8 @@ if($stmt)
         <!-- Action Icons -->
         <div class="profile-right">
 
-            <!-- Settings -->
-            <a href="#">
-
-                <img src="../../assets/icons/settings.png" alt="Settings" class="profile-action">
-
-            </a>
-
             <!-- Notification -->
-            <a href="#">
+            <a href="../notification/notification.php">
 
                 <img src="../../assets/icons/notifications.png" alt="Notification" class="profile-action">
 

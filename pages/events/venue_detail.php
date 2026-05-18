@@ -100,7 +100,7 @@ while($row = $bookingResult->fetch_assoc())
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Venue Details</title>
+    <title>APCampusHub</title>
 
     <link rel="stylesheet" href="../../assets/css/general.css">
     <link rel="stylesheet" href="../../assets/css/profile.css">

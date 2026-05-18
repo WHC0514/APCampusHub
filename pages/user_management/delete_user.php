@@ -18,7 +18,7 @@ if(!isset($_GET['user_id']))
 {
     echo "<script>
         alert('Missing user ID.');
-        window.location.href='user_management.php';
+        window.location.href='../admin/user_management.php';
     </script>";
     exit();
 }
@@ -30,7 +30,7 @@ if($userID == $_SESSION['user_id'])
 {
     echo "<script>
         alert('You cannot delete your own account.');
-        window.location.href='user_management.php';
+        window.location.href='../admin/user_management.php';
     </script>";
     exit();
 }
@@ -47,7 +47,7 @@ if($result->num_rows == 0)
 {
     echo "<script>
         alert('User not found.');
-        window.location.href='user_management.php';
+        window.location.href='../admin/user_management.php';
     </script>";
     exit();
 }
@@ -78,7 +78,7 @@ switch($role)
     default:
         echo "<script>
             alert('Invalid role.');
-            window.location.href='user_management.php';
+            window.location.href='../admin/user_management.php';
         </script>";
         exit();
 }
@@ -122,7 +122,7 @@ if(!$stmt->execute())
 {
     echo "<script>
         alert('Failed to delete user.');
-        window.location.href='user_management.php';
+        window.location.href='../admin/user_management.php';
     </script>";
     exit();
 }
@@ -130,7 +130,7 @@ if(!$stmt->execute())
 /* Success */
 echo "<script>
     alert('User deleted successfully!');
-    window.location.href='user_management.php';
+    window.location.href='../admin/user_management.php';
 </script>";
 
 exit();

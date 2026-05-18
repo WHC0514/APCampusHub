@@ -84,6 +84,7 @@ while($row = $suggestResult->fetch_assoc())
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APCampusHub</title>
+    
     <link rel="stylesheet" href="../../assets/css/general.css">
     <link rel="stylesheet" href="../../assets/css/student/room_booking.css">
 </head>
@@ -393,11 +394,8 @@ document.addEventListener("click", function(e){
         searchResult.style.display = "none";
     }
 });
-</script>
 
 <!-- Search bar for room -->
-<script>
-
 const rooms = <?php echo json_encode($suggestionRooms); ?>;
 
 const input = document.getElementById("roomSearchInput");

@@ -97,12 +97,8 @@ if(!empty($booking['cover_image']))
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport"content="width=device-width, initial-scale=1.0">
     <title>APCampusHub</title>
 
     <link rel="stylesheet" href="../../assets/css/general.css">
@@ -112,132 +108,132 @@ if(!empty($booking['cover_image']))
 </head>
 <body>
 
-<!-- TOPBAR -->
-<div class="topbar profile-topbar">
+    <!-- Topbar -->
+    <div class="topbar profile-topbar">
 
-    <div class="profile-topbar-left">
+        <div class="profile-topbar-left">
 
-        <a href="$dashboard" class="back-btn">
+            <a href="$dashboard" class="back-btn">
 
-            <img src="../../assets/icons/back.png" class="back-icon">
-
-        </a>
-
-        <h2>Room Check In</h2>
-
-    </div>
-
-</div>
-
-<div class="otp-container">
-
-    <div class="otp-card">
-
-        <img src="<?php echo $image; ?>" class="otp-image">
-
-        <div class="otp-body">
-
-            <h1 class="otp-title">
-
-                Enter OTP
-                
-            </h1>
-
-            <p class="otp-subtitle">
-
-                Enter the 3-digit OTP displayed
-                in the room projector or screen.
-
-            </p>
-
-            <div class="room-info">
-
-                <p>
-                    <strong>
-                        <?php
-                        echo $booking['room_name'];
-                        ?>
-                    </strong>
-                </p>
-
-                <p>
-
-                    <?php
-                    echo date(
-                        "d M Y",
-                        strtotime(
-                            $booking['booking_date']
-                        )
-                    );
-                    ?>
-
-                </p>
-
-                <p>
-
-                    <?php
-                    echo date(
-                        "g:i A",
-                        strtotime(
-                            $booking['start_time']
-                        )
-                    );
-
-                    echo " - ";
-
-                    echo date(
-                        "g:i A",
-                        strtotime(
-                            $booking['end_time']
-                        )
-                    );
-                    ?>
-
-                </p>
-
-            </div>
-
-            <div class="error-msg" id="errorMsg">
-
-                Invalid OTP
-
-            </div>
-
-            <form method="POST" action="process_checkin.php" id="otpForm">
-
-                <input type="hidden" name="booking_id" value="<?php echo $bookingID; ?>">
-
-                <input type="hidden" name="otp" id="finalOtp">
-
-                <div class="otp-input-group">
-
-                    <input type="text" maxlength="1" class="otp-input" id="otp1">
-
-                    <input type="text" maxlength="1" class="otp-input" id="otp2">
-
-                    <input type="text" maxlength="1" class="otp-input" id="otp3">
-
-                </div>
-
-                <button type="submit" class="verify-btn">
-
-                    Verify & Check In
-
-                </button>
-
-            </form>
-
-            <a href="$dashboard" class="back-btn-page">
-
-                Back To Check In
+                <img src="../../assets/icons/back.png" class="back-icon">
 
             </a>
+
+            <h2>Room Check In</h2>
 
         </div>
 
     </div>
 
-</div>
+    <div class="otp-container">
+
+        <div class="otp-card">
+
+            <img src="<?php echo $image; ?>" class="otp-image">
+
+            <div class="otp-body">
+
+                <h1 class="otp-title">
+
+                    Enter OTP
+                
+                </h1>
+
+                <p class="otp-subtitle">
+
+                    Enter the 3-digit OTP displayed
+                    in the room projector or screen.
+
+                </p>
+
+                <div class="room-info">
+
+                    <p>
+                        <strong>
+                            <?php
+                            echo $booking['room_name'];
+                            ?>
+                        </strong>
+                    </p>
+
+                    <p>
+
+                        <?php
+                        echo date(
+                            "d M Y",
+                            strtotime(
+                                $booking['booking_date']
+                            )
+                        );
+                        ?>
+
+                    </p>
+
+                    <p>
+
+                        <?php
+                        echo date(
+                            "g:i A",
+                            strtotime(
+                                $booking['start_time']
+                            )
+                        );
+
+                        echo " - ";
+
+                        echo date(
+                            "g:i A",
+                            strtotime(
+                                $booking['end_time']
+                            )
+                        );
+                        ?>
+
+                    </p>
+
+                </div>
+
+                <div class="error-msg" id="errorMsg">
+
+                    Invalid OTP
+
+                </div>
+
+                <form method="POST" action="process_checkin.php" id="otpForm">
+
+                    <input type="hidden" name="booking_id" value="<?php echo $bookingID; ?>">
+
+                    <input type="hidden" name="otp" id="finalOtp">
+
+                    <div class="otp-input-group">
+
+                        <input type="text" maxlength="1" class="otp-input" id="otp1">
+
+                        <input type="text" maxlength="1" class="otp-input" id="otp2">
+
+                        <input type="text" maxlength="1" class="otp-input" id="otp3">
+
+                    </div>
+
+                    <button type="submit" class="verify-btn">
+
+                        Verify & Check In
+
+                    </button>
+
+                </form>
+
+                <a href="$dashboard" class="back-btn-page">
+
+                    Back To Check In
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
 
 <script>
 

@@ -171,7 +171,8 @@ while($row = $resReport->fetch_assoc()) {
 <!DOCTYPE html>
 <html>
 <head>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APCampusHub</title>
 
     <link rel="stylesheet" href="../../assets/css/general.css">
@@ -179,428 +180,424 @@ while($row = $resReport->fetch_assoc()) {
     <link rel="stylesheet" href="../../assets/css/check_inout/session.css">
 
 </head>
-
 <body>
 
-<!-- Topbar -->
-    <div class="topbar profile-topbar">
+    <!-- Topbar -->
+        <div class="topbar profile-topbar">
 
-        <div class="profile-topbar-left">
+            <div class="profile-topbar-left">
 
-            <!-- Back Button -->
-            <a href="<?php echo $dashboard; ?>" class="back-btn">
+                <!-- Back Button -->
+                <a href="<?php echo $dashboard; ?>" class="back-btn">
 
-                <img src="../../assets/icons/back.png" class="back-icon">
+                    <img src="../../assets/icons/back.png" class="back-icon">
 
-            </a>
+                </a>
 
-            <h2>Smart Room Control</h2>
-
-        </div>
-    </div>
-
-    <!-- Content -->
-
-<div class="otp-wrapper">
-
-    <div class="dashboard-container">
-
-        <!-- Room Header -->
-        <div class="room-header">
-
-            <img src="<?php echo $roomImage; ?>"
-                 class="room-image">
-
-            <h1 class="welcome-title">
-
-                Welcome to
-                <?php echo $booking['room_name']; ?>
-
-            </h1>
-
-            <div class="room-subinfo">
-
-                <?php echo $booking['room_type']; ?>
-
-                •
-
-                Block
-                <?php echo $booking['block']; ?>
-
-                •
-
-                Level
-                <?php echo $booking['level']; ?>
+                <h2>Smart Room Control</h2>
 
             </div>
-
         </div>
 
-        <!-- Session Card -->
-        <div class="session-card">
+        <!-- Content -->
 
-            <div class="session-info">
+        <div class="otp-wrapper">
 
-                <h3>
-                    Current Active Session
-                </h3>
+            <div class="dashboard-container">
 
-                <p>
+                <!-- Room Header -->
+                <div class="room-header">
 
-                    <?php echo $start; ?>
+                    <img src="<?php echo $roomImage; ?>" class="room-image">
 
-                    -
+                    <h1 class="welcome-title">
 
-                    <?php echo $end; ?>
+                        Welcome to
+                        <?php echo $booking['room_name']; ?>
 
-                </p>
+                    </h1>
 
-            </div>
+                    <div class="room-subinfo">
 
-            <button class="checkout-btn" onclick="manualCheckout()">
+                        <?php echo $booking['room_type']; ?>
 
-                Check Out
+                        •
 
-            </button>
+                        Block
+                        <?php echo $booking['block']; ?>
 
-        </div>
+                        •
 
-        <!-- Control Grid -->
-        <div class="control-grid">
+                        Level
+                        <?php echo $booking['level']; ?>
 
-            <!-- Projector -->
-            <div class="control-card">
+                    </div>
 
-                <div class="control-top">
+                </div>
 
-                    <div>
+                <!-- Session Card -->
+                <div class="session-card">
+
+                    <div class="session-info">
 
                         <h3>
-
-                            <img src="../../assets/icons/projector.png" class="control-icon">
-                            Projector Control
-
+                            Current Active Session
                         </h3>
 
                         <p>
-                            Control room projector power
+
+                            <?php echo $start; ?>
+
+                            -
+
+                            <?php echo $end; ?>
+
                         </p>
 
                     </div>
 
-                    <div class="status-badge 
-                    <?php echo ($projectorStatus == 'ON') 
-                    ? 'green-status' 
-                    : 'red-status'; ?>" id="projectorBadge">
+                    <button class="checkout-btn" onclick="manualCheckout()">
 
-                        <?php echo $projectorStatus; ?>
-
-                    </div>
-
-                </div>
-
-                <div class="btn-group">
-
-                    <button class="btn green" onclick="updateProjector('ON')">
-
-                        Turn ON
-
-                    </button>
-
-                    <button class="btn red" onclick="updateProjector('OFF')">
-
-                        Turn OFF
+                        Check Out
 
                     </button>
 
                 </div>
 
-            </div>
+                <!-- Control Grid -->
+                <div class="control-grid">
 
-            <!-- Light -->
-            <div class="control-card">
+                    <!-- Projector -->
+                    <div class="control-card">
 
-                <h3>
+                        <div class="control-top">
 
-                    <img src="../../assets/icons/bulb.png" class="control-icon">
-                    Light Brightness
+                            <div>
 
-                </h3>
+                                <h3>
 
-                <p>
-                    Adjust room lighting intensity
-                </p>
+                                    <img src="../../assets/icons/projector.png" class="control-icon">
+                                    Projector Control
 
-                <input type="hidden" id="roomID" value="<?php echo $roomID; ?>">
+                                </h3>
 
-                <div class="range-value">
-
-                    Current:
-                    <span id="brightnessText">
-
-                        <?php echo $lightBrightness; ?>
-
-                    </span>%
-
-                </div>
-
-                <input type="range" id="brightnessSlider" min="0" max="100" value="<?php echo $lightBrightness; ?>">
-
-                <button class="btn blue full-btn" onclick="updateBrightness()">
-
-                    Update Brightness
-
-                </button>
-
-            </div>
-
-            <!-- Aircond -->
-            <div class="control-card">
-
-                <h3>
-
-                    <img src="../../assets/icons/freeze.png" class="control-icon">
-                    Air Conditioner
-
-                </h3>
-
-                <p>
-                    Adjust room temperature
-                </p>
-
-                <div class="temp-display" id="tempText">
-
-                    <?php echo $acTemperature; ?>°C
-
-                </div>
-
-                <input type="number" id="tempInput" min="16" max="30" value="<?php echo $acTemperature; ?>">
-
-                <button class="btn blue full-btn" onclick="updateAC()">
-
-                    Set Temperature
-
-                </button>
-
-            </div>
-
-            <!-- HELP / REPORT -->
-            <div class="control-card">
-
-                <h3>
-
-                    <img src="../../assets/icons/help.png" class="control-icon">
-                    Assistance & Support
-
-                </h3>
-
-                <p>
-                    Request staff assistance or
-                    report room issues
-                </p>
-
-                <div class="support-btn-group">
-
-                    <a href="room_service.php?booking_id=<?php echo $bookingID; ?>" class="btn blue">
-
-                        Request Support
-
-                    </a>
-
-                    <a href="report_issue.php?booking_id=<?php echo $bookingID; ?>" class="btn orange">
-
-                        Submit Report
-
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <?php if(!empty($requests) || !empty($reports)): ?>
-
-            <div class="request-history">
-
-                <h3>Support & Report History</h3>
-
-                <!-- Service Request -->
-                <?php if(!empty($requests)): ?>
-
-                    <div class="history-section-title">
-                        Service Requests
-                    </div>
-
-                    <?php foreach($requests as $req): ?>
-
-                        <?php
-                            $reqProgress = 20;
-
-                            if($req['status'] === "In Progress") {
-                                $reqProgress = 50;
-                            }
-                            elseif($req['status'] === "Done") {
-                                $reqProgress = 100;
-                            }
-                        ?>
-
-                        <div class="history-card">
-
-                            <div class="history-top">
-
-                                <div class="req-left">
-                                    <?php echo $req['request_type']; ?>
-                                </div>
-
-                                <div class="req-right status-<?php echo strtolower(str_replace(' ', '-', $req['status'])); ?>">
-                                    <?php echo $req['status']; ?>
-                                </div>
+                                <p>
+                                    Control room projector power
+                                </p>
 
                             </div>
 
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: <?php echo $reqProgress; ?>%;"></div>
+                            <div class="status-badge 
+                            <?php echo ($projectorStatus == 'ON') 
+                            ? 'green-status' 
+                            : 'red-status'; ?>" id="projectorBadge">
+
+                                <?php echo $projectorStatus; ?>
+
                             </div>
 
                         </div>
 
-                    <?php endforeach; ?>
+                        <div class="btn-group">
 
-                <?php endif; ?>
+                            <button class="btn green" onclick="updateProjector('ON')">
 
-                <!-- Issue Report -->
-                <?php if(!empty($reports)): ?>
+                                Turn ON
 
-                    <div class="history-section-title">
-                        Issue Reports
-                    </div>
+                            </button>
 
-                    <?php foreach($reports as $report): ?>
+                            <button class="btn red" onclick="updateProjector('OFF')">
 
-                        <?php
-                            $reportProgress = 20;
+                                Turn OFF
 
-                            if($report['status'] === "In Progress") {
-                                $reportProgress = 50;
-                            }
-                            elseif($report['status'] === "Resolved") {
-                                $reportProgress = 100;
-                            }
-                        ?>
-
-                        <div class="history-card">
-
-                            <div class="history-top">
-
-                                <div class="req-left">
-
-                                    <?php echo $report['issue_type']; ?>
-
-                                    <span class="severity-badge severity-<?php echo strtolower($report['severity']); ?>">
-                                        <?php echo $report['severity']; ?>
-                                    </span>
-
-                                </div>
-
-                                <div class="req-right status-<?php echo strtolower(str_replace(' ', '-', $report['status'])); ?>">
-                                    <?php echo $report['status']; ?>
-                                </div>
-
-                            </div>
-
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: <?php echo $reportProgress; ?>%;"></div>
-                            </div>
+                            </button>
 
                         </div>
 
-                    <?php endforeach; ?>
+                    </div>
+
+                    <!-- Light -->
+                    <div class="control-card">
+
+                        <h3>
+
+                            <img src="../../assets/icons/bulb.png" class="control-icon">
+                            Light Brightness
+
+                        </h3>
+
+                        <p>
+                            Adjust room lighting intensity
+                        </p>
+
+                        <input type="hidden" id="roomID" value="<?php echo $roomID; ?>">
+
+                        <div class="range-value">
+
+                            Current:
+                            <span id="brightnessText">
+
+                                <?php echo $lightBrightness; ?>
+
+                            </span>%
+
+                        </div>
+
+                        <input type="range" id="brightnessSlider" min="0" max="100" value="<?php echo $lightBrightness; ?>">
+
+                        <button class="btn blue full-btn" onclick="updateBrightness()">
+
+                            Update Brightness
+
+                        </button>
+
+                    </div>
+
+                    <!-- Aircond -->
+                    <div class="control-card">
+
+                        <h3>
+
+                            <img src="../../assets/icons/freeze.png" class="control-icon">
+                            Air Conditioner
+
+                        </h3>
+
+                        <p>
+                            Adjust room temperature
+                        </p>
+
+                        <div class="temp-display" id="tempText">
+
+                            <?php echo $acTemperature; ?>°C
+
+                        </div>
+
+                        <input type="number" id="tempInput" min="16" max="30" value="<?php echo $acTemperature; ?>">
+
+                        <button class="btn blue full-btn" onclick="updateAC()">
+
+                            Set Temperature
+
+                        </button>
+
+                    </div>
+
+                    <!-- Help & Report -->
+                    <div class="control-card">
+
+                        <h3>
+
+                            <img src="../../assets/icons/help.png" class="control-icon">
+                            Assistance & Support
+
+                        </h3>
+
+                        <p>
+                            Request staff assistance or
+                            report room issues
+                        </p>
+
+                        <div class="support-btn-group">
+
+                            <a href="room_service.php?booking_id=<?php echo $bookingID; ?>" class="btn blue">
+
+                                Request Support
+
+                            </a>
+
+                            <a href="report_issue.php?booking_id=<?php echo $bookingID; ?>" class="btn orange">
+
+                                Submit Report
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <?php if(!empty($requests) || !empty($reports)): ?>
+
+                    <div class="request-history">
+
+                        <h3>Support & Report History</h3>
+
+                        <!-- Service Request -->
+                        <?php if(!empty($requests)): ?>
+
+                            <div class="history-section-title">
+                                Service Requests
+                            </div>
+
+                            <?php foreach($requests as $req): ?>
+
+                                <?php
+                                    $reqProgress = 20;
+
+                                    if($req['status'] === "In Progress") {
+                                        $reqProgress = 50;
+                                    }
+                                    elseif($req['status'] === "Done") {
+                                        $reqProgress = 100;
+                                    }
+                                ?>
+
+                                <div class="history-card">
+
+                                    <div class="history-top">
+
+                                        <div class="req-left">
+                                            <?php echo $req['request_type']; ?>
+                                        </div>
+
+                                        <div class="req-right status-<?php echo strtolower(str_replace(' ', '-', $req['status'])); ?>">
+                                            <?php echo $req['status']; ?>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: <?php echo $reqProgress; ?>%;"></div>
+                                    </div>
+
+                                </div>
+
+                            <?php endforeach; ?>
+
+                        <?php endif; ?>
+
+                        <!-- Issue Report -->
+                        <?php if(!empty($reports)): ?>
+
+                            <div class="history-section-title">
+                                Issue Reports
+                            </div>
+
+                            <?php foreach($reports as $report): ?>
+
+                                <?php
+                                    $reportProgress = 20;
+
+                                    if($report['status'] === "In Progress") {
+                                        $reportProgress = 50;
+                                    }
+                                    elseif($report['status'] === "Resolved") {
+                                        $reportProgress = 100;
+                                    }
+                                ?>
+
+                                <div class="history-card">
+
+                                    <div class="history-top">
+
+                                        <div class="req-left">
+
+                                            <?php echo $report['issue_type']; ?>
+
+                                            <span class="severity-badge severity-<?php echo strtolower($report['severity']); ?>">
+                                                <?php echo $report['severity']; ?>
+                                            </span>
+
+                                        </div>
+
+                                        <div class="req-right status-<?php echo strtolower(str_replace(' ', '-', $report['status'])); ?>">
+                                            <?php echo $report['status']; ?>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: <?php echo $reportProgress; ?>%;"></div>
+                                    </div>
+
+                                </div>
+
+                            <?php endforeach; ?>
+
+                        <?php endif; ?>
+
+                    </div>
 
                 <?php endif; ?>
 
             </div>
 
-        <?php endif; ?>
+        </div>
 
-    </div>
+        <!-- Session Warning -->
 
-</div>
+        <div class="session-warning" id="sessionWarning">
 
-<!-- Session Warning -->
+            <div class="warning-card">
 
-<div class="session-warning" id="sessionWarning">
+                <!-- Close Button -->
+                <button class="close-warning-btn" onclick="closeWarning()">
 
-    <div class="warning-card">
+                    <img src="../../assets/icons/close.png" class="close-icon">
 
-        <!-- Close Button -->
-        <button class="close-warning-btn" onclick="closeWarning()">
+                </button>
 
-            <img src="../../assets/icons/close.png" class="close-icon">
+                <div class="warning-icon">
 
-        </button>
+                    <img src="../../assets/icons/clock.png" class="warning-icon-img">
 
-        <div class="warning-icon">
+                </div>
 
-            <img src="../../assets/icons/clock.png" class="warning-icon-img">
+                <h2>
+                    Session Ending Soon
+                </h2>
+
+                <p>
+                    Your booking session will end
+                    in less than 5 minutes.
+                </p>
+
+            </div>
 
         </div>
 
-        <h2>
-            Session Ending Soon
-        </h2>
+        <!-- Session Ended -->
 
-        <p>
-            Your booking session will end
-            in less than 5 minutes.
-        </p>
+        <div class="session-ended" id="sessionEnded">
 
-    </div>
+            <div class="ended-card">
 
-</div>
+                <div class="ended-icon">
 
-<!-- Session Ended -->
+                    <img src="../../assets/icons/door.png" class="ended-image-icon">
 
-<div class="session-ended" id="sessionEnded">
+                </div>
 
-    <div class="ended-card">
+                <h2>
+                    Session Ended
+                </h2>
 
-        <div class="ended-icon">
+                <p>
 
-            <img src="../../assets/icons/door.png" class="ended-image-icon">
+                    Your booking session has ended.
+
+                    <br><br>
+
+                    Please leave the classroom
+                    as soon as possible.
+
+                </p>
+
+            </div>
 
         </div>
-
-        <h2>
-            Session Ended
-        </h2>
-
-        <p>
-
-            Your booking session has ended.
-
-            <br><br>
-
-            Please leave the classroom
-            as soon as possible.
-
-        </p>
-
-    </div>
-
-</div>
 
 </body>
 
 <script>
 
 /* Session timer */
-
 const remainingSeconds =
 <?php echo $remainingSeconds; ?>;
 
 /* Show warning before 5 min session end */
-
 if(
     remainingSeconds <= 300 &&
     remainingSeconds > 0
@@ -610,14 +607,12 @@ if(
 }
 
 /* Close warning popup */
-
 function closeWarning()
 {
     document.getElementById("sessionWarning").style.display = "none";
 }
 
 /* Auto checkout */
-
 setTimeout(() =>
 {
     autoCheckout();
@@ -625,7 +620,6 @@ setTimeout(() =>
 }, remainingSeconds * 1000);
 
 /* Auto checkout function */
-
 function autoCheckout() {
     fetch("auto_checkout.php", {
         method: "POST",
@@ -654,8 +648,7 @@ function autoCheckout() {
     });
 }
 
-/*vManual checkout */
-
+/*Manual checkout */
 function manualCheckout()
 {
     if(!confirm("Are you sure you want to check out?"))
@@ -688,7 +681,6 @@ function manualCheckout()
 <script>
 
 /* Text for live brightness */
-
 const slider = document.getElementById("brightnessSlider");
 
 const brightnessText = document.getElementById("brightnessText");
@@ -700,7 +692,6 @@ slider.addEventListener("input", () =>
 });
 
 /* Update projector status */
-
 function updateProjector(state)
 {
     const roomID = document.getElementById("roomID").value;
@@ -752,7 +743,6 @@ function updateProjector(state)
 }
 
 /* Update light status */
-
 function updateBrightness()
 {
     const roomID = document.getElementById("roomID").value;
@@ -780,7 +770,6 @@ function updateBrightness()
 }
 
 /* Update aircond status */
-
 function updateAC()
 {
     const roomID = document.getElementById("roomID").value;

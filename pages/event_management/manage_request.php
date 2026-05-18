@@ -58,56 +58,131 @@ $historyResult = $stmtHistory->get_result();
 </head>
 <body>
 
-<!-- Topbar -->
-<div class="topbar profile-topbar">
-    <div class="profile-topbar-left">
-        <a href="../admin/event_management.php" class="back-btn">
-            <img src="../../assets/icons/back.png" class="back-icon">
-        </a>
-        <h2>Manage Event Requests</h2>
-    </div>
-</div>
-
-<div class="container">
-
-    <div class="tab-toggle">
-        <button class="tab-btn active" onclick="switchTab('pending', this)">
-            Pending
-        </button>
-        <button class="tab-btn" onclick="switchTab('history', this)">
-            Approved / Rejected
-        </button>
+    <!-- Topbar -->
+    <div class="topbar profile-topbar">
+        <div class="profile-topbar-left">
+            <a href="../admin/event_management.php" class="back-btn">
+                <img src="../../assets/icons/back.png" class="back-icon">
+            </a>
+            <h2>Manage Event Requests</h2>
+        </div>
     </div>
 
-    <!-- Pending Tab -->
-    <div id="tab-pending" class="tab-panel active">
+    <div class="container">
 
-        <?php if($pendingResult->num_rows > 0): ?>
+        <div class="tab-toggle">
+            <button class="tab-btn active" onclick="switchTab('pending', this)">
+                Pending
+            </button>
+            <button class="tab-btn" onclick="switchTab('history', this)">
+                Approved / Rejected
+            </button>
+        </div>
 
-            <div class="booking-list">
+        <!-- Pending Tab -->
+        <div id="tab-pending" class="tab-panel active">
 
-            <?php while($b = $pendingResult->fetch_assoc()): ?>
+            <?php if($pendingResult->num_rows > 0): ?>
 
-                <?php
-                $image = "../../uploads/event/default-venue.jpg";
-                if(!empty($b['cover_image'])) {
-                    $image = "../../uploads/event/" . $b['cover_image'];
-                }
+                <div class="booking-list">
 
-                $requesterName = $b['role'] === 'lecturer'
-                    ? ($b['lecturer_name'] ?? 'Unknown')
-                    : ($b['student_name'] ?? 'Unknown');
-                ?>
+                <?php while($b = $pendingResult->fetch_assoc()): ?>
 
-                <!-- Clickable card goes to detail page -->
-                <a href="event_booking_detail.php?booking_id=<?php echo $b['booking_id']; ?>"
-                   class="booking-card-link">
+                    <?php
+                    $image = "../../uploads/event/default-venue.jpg";
+                    if(!empty($b['cover_image'])) {
+                        $image = "../../uploads/event/" . $b['cover_image'];
+                    }
 
-                    <div class="booking-card pending-card">
+                    $requesterName = $b['role'] === 'lecturer'
+                        ? ($b['lecturer_name'] ?? 'Unknown')
+                        : ($b['student_name'] ?? 'Unknown');
+                    ?>
 
-                        <img src="<?php echo $image; ?>"
-                             class="booking-room-img"
-                             alt="venue">
+                    <!-- Clickable card goes to detail page -->
+                    <a href="event_booking_detail.php?booking_id=<?php echo $b['booking_id']; ?>" class="booking-card-link">
+
+                        <div class="booking-card pending-card">
+
+                            <img src="<?php echo $image; ?>" class="booking-room-img" alt="venue">
+
+                            <div class="booking-info">
+
+                                <h4><?php echo htmlspecialchars($b['venue_name']); ?></h4>
+
+                                <p class="booking-type">
+                                    Requested by: <?php echo htmlspecialchars($requesterName); ?>
+                                    (<?php echo ucfirst($b['role']); ?>)
+                                </p>
+
+                                <p class="booking-time">
+                                    <?php echo date("D, d M Y g:i A", strtotime($b['start_time'])); ?>
+                                </p>
+
+                                <p class="booking-time">
+                                    to <?php echo date("D, d M Y g:i A", strtotime($b['end_time'])); ?>
+                                </p>
+
+                                <p class="booking-submitted">
+                                    Submitted: <?php echo date("d M Y, g:i A", strtotime($b['created_at'])); ?>
+                                </p>
+
+                                <span class="booking-status status-pending">
+                                    Pending
+                                </span>
+
+                            </div>
+
+                            <div class="arrow-icon">›</div>
+
+                        </div>
+
+                    </a>
+
+                <?php endwhile; ?>
+
+                </div>
+
+            <?php else: ?>
+                <div class="empty-state">No pending requests.</div>
+            <?php endif; ?>
+
+        </div>
+
+        <!-- History Tab -->
+        <div id="tab-history" class="tab-panel">
+
+            <?php if($historyResult->num_rows > 0): ?>
+
+                <div class="booking-list">
+
+                <?php while($b = $historyResult->fetch_assoc()): ?>
+
+                    <?php
+                    $image = "../../uploads/event/default-venue.jpg";
+                    if(!empty($b['cover_image'])) {
+                        $image = "../../uploads/event/" . $b['cover_image'];
+                    }
+
+                    $requesterName = $b['role'] === 'lecturer'
+                        ? ($b['lecturer_name'] ?? 'Unknown')
+                        : ($b['student_name'] ?? 'Unknown');
+
+                    switch($b['booking_status']) {
+                        case 'Approved':
+                            $statusClass = "status-completed";
+                            break;
+                        case 'Rejected':
+                            $statusClass = "status-canceled";
+                            break;
+                        default:
+                            $statusClass = "status-scheduled";
+                    }
+                    ?>
+
+                    <div class="booking-card history">
+
+                        <img src="<?php echo $image; ?>" class="booking-room-img" alt="venue">
 
                         <div class="booking-info">
 
@@ -130,105 +205,25 @@ $historyResult = $stmtHistory->get_result();
                                 Submitted: <?php echo date("d M Y, g:i A", strtotime($b['created_at'])); ?>
                             </p>
 
-                            <span class="booking-status status-pending">
-                                Pending
+                            <span class="booking-status <?php echo $statusClass; ?>">
+                                <?php echo $b['booking_status']; ?>
                             </span>
 
                         </div>
 
-                        <div class="arrow-icon">›</div>
-
                     </div>
 
-                </a>
-
-            <?php endwhile; ?>
-
-            </div>
-
-        <?php else: ?>
-            <div class="empty-state">No pending requests.</div>
-        <?php endif; ?>
-
-    </div>
-
-    <!-- History Tab -->
-    <div id="tab-history" class="tab-panel">
-
-        <?php if($historyResult->num_rows > 0): ?>
-
-            <div class="booking-list">
-
-            <?php while($b = $historyResult->fetch_assoc()): ?>
-
-                <?php
-                $image = "../../uploads/event/default-venue.jpg";
-                if(!empty($b['cover_image'])) {
-                    $image = "../../uploads/event/" . $b['cover_image'];
-                }
-
-                $requesterName = $b['role'] === 'lecturer'
-                    ? ($b['lecturer_name'] ?? 'Unknown')
-                    : ($b['student_name'] ?? 'Unknown');
-
-                switch($b['booking_status']) {
-                    case 'Approved':
-                        $statusClass = "status-completed";
-                        break;
-                    case 'Rejected':
-                        $statusClass = "status-canceled";
-                        break;
-                    default:
-                        $statusClass = "status-scheduled";
-                }
-                ?>
-
-                <div class="booking-card history">
-
-                    <img src="<?php echo $image; ?>"
-                         class="booking-room-img"
-                         alt="venue">
-
-                    <div class="booking-info">
-
-                        <h4><?php echo htmlspecialchars($b['venue_name']); ?></h4>
-
-                        <p class="booking-type">
-                            Requested by: <?php echo htmlspecialchars($requesterName); ?>
-                            (<?php echo ucfirst($b['role']); ?>)
-                        </p>
-
-                        <p class="booking-time">
-                            <?php echo date("D, d M Y g:i A", strtotime($b['start_time'])); ?>
-                        </p>
-
-                        <p class="booking-time">
-                            to <?php echo date("D, d M Y g:i A", strtotime($b['end_time'])); ?>
-                        </p>
-
-                        <p class="booking-submitted">
-                            Submitted: <?php echo date("d M Y, g:i A", strtotime($b['created_at'])); ?>
-                        </p>
-
-                        <span class="booking-status <?php echo $statusClass; ?>">
-                            <?php echo $b['booking_status']; ?>
-                        </span>
-
-                    </div>
+                <?php endwhile; ?>
 
                 </div>
 
-            <?php endwhile; ?>
+            <?php else: ?>
+                <div class="empty-state">No approved or rejected requests yet.</div>
+            <?php endif; ?>
 
-            </div>
-
-        <?php else: ?>
-            <div class="empty-state">No approved or rejected requests yet.</div>
-        <?php endif; ?>
+        </div>
 
     </div>
-
-</div>
 
 <script>
 function switchTab(tab, btn) {

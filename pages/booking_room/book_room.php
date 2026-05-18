@@ -1,5 +1,7 @@
 <?php
+
 session_start();
+
 date_default_timezone_set("Asia/Kuala_Lumpur");
 
 if(!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || !in_array($_SESSION['role'], ["student", "lecturer"]))
@@ -183,69 +185,73 @@ $nextAvailable = !empty($availableBlocks) ? $availableBlocks[0] : null;
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APCampusHub</title>
+
     <link rel="stylesheet" href="../../assets/css/general.css">
     <link rel="stylesheet" href="../../assets/css/profile.css">
     <link rel="stylesheet" href="../../assets/css/booking_room/book_room.css">
+
 </head>
 <body>
 
-<!-- TOPBAR -->
-<div class="topbar profile-topbar">
-    <div class="profile-topbar-left">
-        <a href="room_detail.php?room_id=<?php echo $roomID; ?>" class="back-btn">
-            <img src="../../assets/icons/back.png" class="back-icon">
-        </a>
-        <h2>Book Room</h2>
-    </div>
-</div>
-
-<div class="container">
-
-    <!-- Room Info -->
-    <div class="room-card">
-        <img src="<?php echo $coverImage; ?>" alt="room">
-        <h2><?php echo $room['room_name']; ?></h2>
-        <p><?php echo $room['room_type']; ?></p>
-        <p>Capacity: <?php echo $room['capacity']; ?></p>
+    <!-- Topbar -->
+    <div class="topbar profile-topbar">
+        <div class="profile-topbar-left">
+            <a href="room_detail.php?room_id=<?php echo $roomID; ?>" class="back-btn">
+                <img src="../../assets/icons/back.png" class="back-icon">
+            </a>
+            <h2>Book Room</h2>
+        </div>
     </div>
 
-    <!-- Date -->
-    <div class="section">
-        <h3>Select Date</h3>
-        <input type="date" id="dateInput" value="<?php echo $selectedDate; ?>" min="<?php echo date('Y-m-d'); ?>">
+    <div class="container">
+
+        <!-- Room Info -->
+        <div class="room-card">
+            <img src="<?php echo $coverImage; ?>" alt="room">
+            <h2><?php echo $room['room_name']; ?></h2>
+            <p><?php echo $room['room_type']; ?></p>
+            <p>Capacity: <?php echo $room['capacity']; ?></p>
+        </div>
+
+        <!-- Date -->
+        <div class="section">
+            <h3>Select Date</h3>
+            <input type="date" id="dateInput" value="<?php echo $selectedDate; ?>" min="<?php echo date('Y-m-d'); ?>">
+        </div>
+
+        <!-- Start Time -->
+        <div class="section">
+            <h3>Select Start Time</h3>
+            <input type="time" id="startTime" value="<?php echo $nextAvailable ? date('H:i', $nextAvailable[0]) : ''; ?>">
+            <div id="validationMsg"></div>
+        </div>
+
+        <!-- End Time -->
+        <div class="section">
+            <h3>Select End Time</h3>
+            <input type="time" id="endTime" value="<?php echo $nextAvailable ? date('H:i', $nextAvailable[1]) : ''; ?>">
+            <div id="endValidationMsg"></div>
+        </div>
+
+        <!-- Available Slot -->
+        <div class="section">
+            <h3>Available Slot</h3>
+            <div id="slotPreview"></div>
+        </div>
+
+        <!-- Form — hidden inputs carry the final validated values to process_booking.php -->
+        <form method="POST" action="process_booking.php">
+            <input type="hidden" name="room_id" value="<?php echo $roomID; ?>">
+            <input type="hidden" name="date" id="finalDate" value="<?php echo $selectedDate; ?>">
+            <input type="hidden" name="start_time" id="finalStart">
+            <input type="hidden" name="end_time" id="finalEnd">
+            <button type="submit" class="btn">Book Now</button>
+        </form>
+
     </div>
-
-    <!-- Start Time -->
-    <div class="section">
-        <h3>Select Start Time</h3>
-        <input type="time" id="startTime" value="<?php echo $nextAvailable ? date('H:i', $nextAvailable[0]) : ''; ?>">
-        <div id="validationMsg"></div>
-    </div>
-
-    <!-- End Time -->
-    <div class="section">
-        <h3>Select End Time</h3>
-        <input type="time" id="endTime" value="<?php echo $nextAvailable ? date('H:i', $nextAvailable[1]) : ''; ?>">
-        <div id="endValidationMsg"></div>
-    </div>
-
-    <!-- Available Slot -->
-    <div class="section">
-        <h3>Available Slot</h3>
-        <div id="slotPreview"></div>
-    </div>
-
-    <!-- FORM — hidden inputs carry the final validated values to process_booking.php -->
-    <form method="POST" action="process_booking.php">
-        <input type="hidden" name="room_id" value="<?php echo $roomID; ?>">
-        <input type="hidden" name="date" id="finalDate" value="<?php echo $selectedDate; ?>">
-        <input type="hidden" name="start_time" id="finalStart">
-        <input type="hidden" name="end_time" id="finalEnd">
-        <button type="submit" class="btn">Book Now</button>
-    </form>
-
-</div>
 
 <script>
 
@@ -343,11 +349,6 @@ function findNextBlock(sec) {
     return null;
 }
 
-// Validates on blur (when user leaves the field).
-// If the time is inside a valid block, accept it.
-// If not, snap forward to the next available block.
-// Also resets end time if it no longer falls in the same block.
-
 input.addEventListener("blur", function() {
     let val = this.value;
     msg.innerHTML = "";
@@ -390,10 +391,6 @@ input.addEventListener("blur", function() {
 
     updatePreview();
 });
-
-// Validates on blur (when user leaves the field).
-// End time must be after start time and within the same available block.
-// If not, it snaps to the block's end time.
 
 endInput.addEventListener("blur", function() {
     let val = this.value;
@@ -465,5 +462,6 @@ window.addEventListener("load", function() {
 });
 
 </script>
+
 </body>
 </html>

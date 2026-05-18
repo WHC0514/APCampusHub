@@ -207,7 +207,6 @@ if($currentPointer >= $dayEnd)
     <!-- Content -->
     <div class="room-details-container">
 
-        <!-- LEFT -->
         <div class="room-left">
 
             <img src="<?php echo $mainImage; ?>" class="main-room-image" id="mainImage">

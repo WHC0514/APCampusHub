@@ -76,20 +76,11 @@ $alreadyCheckedIn = false;
 
 if($userID && $currentBooking)
 {
-    $sqlCheck = "
-    SELECT *
-    FROM room_checkin
-    WHERE booking_id = ?
-    AND actual_checkout IS NULL
-    LIMIT 1
-    ";
+    $sqlCheck = "SELECT * FROM room_checkin WHERE booking_id = ? AND actual_checkout IS NULL LIMIT 1";
 
     $stmtCheck = $conn->prepare($sqlCheck);
 
-    $stmtCheck->bind_param(
-        "i",
-        $currentBooking['booking_id']
-    );
+    $stmtCheck->bind_param("i", $currentBooking['booking_id']);
 
     $stmtCheck->execute();
 
@@ -134,10 +125,8 @@ if(!$alreadyCheckedIn && empty($currentOTP))
 {
     $currentOTP = str_pad(rand(0, 999), 3, "0", STR_PAD_LEFT);
 
-    $insert = "
-    INSERT INTO room_otp (room_id, otp_code)
-    VALUES (?, ?)
-    ";
+    $insert = "INSERT INTO room_otp (room_id, otp_code)
+    VALUES (?, ?)";
 
     $stmtInsert = $conn->prepare($insert);
     $stmtInsert->bind_param("is", $roomID, $currentOTP);

@@ -121,181 +121,178 @@ if($search !== '')
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Management</title>
+    <title>APCampusHub</title>
 
     <link rel="stylesheet" href="../../assets/css/general.css">
     <link rel="stylesheet" href="../../assets/css/admin/user_management.css">
 </head>
 <body>
 
-<!-- Topbar -->
-<div class="topbar">
+    <!-- Topbar -->
+    <div class="topbar">
 
-    <div class="topbar-left">
+        <div class="topbar-left">
 
-        <img src="../../assets/images/app-logo.png" class="topbar-logo">
+            <img src="../../assets/images/app-logo.png" class="topbar-logo">
 
-        <div class="search-container">
+            <div class="search-container">
 
-            <input type="text" class="search-bar" id="searchInput" placeholder="Search APCampusHub">
+                <input type="text" class="search-bar" id="searchInput" placeholder="Search APCampusHub">
 
-            <div class="search-result" id="searchResult"></div>
+                <div class="search-result" id="searchResult"></div>
+
+            </div>
+
+        </div>
+
+        <div class="topbar-right">
+
+            <!-- Dashboard -->
+            <a href="dashboard.php" class="topbar-link">
+
+                <div class="topbar-item">
+
+                    <img src="../../assets/icons/dashboard.png" class="topbar-icon">
+
+                    <span>Dashboard</span>
+
+                </div>
+
+            </a>
+
+            <!-- User Management -->
+            <a href="user_management.php" class="topbar-link active">
+
+                <div class="topbar-item">
+
+                    <img src="../../assets/icons/user-management.png" class="topbar-icon">
+
+                    <span>User Management</span>
+
+                </div>
+
+            </a>
+
+            <!-- Event Management -->
+            <a href="event_management.php" class="topbar-link">
+
+                <div class="topbar-item">
+
+                    <img src="../../assets/icons/events.png" class="topbar-icon">
+
+                    <span>Event Management</span>
+
+                </div>
+
+            </a>
 
         </div>
 
     </div>
 
-    <div class="topbar-right">
+    <!-- Content -->
+    <div class="container">
 
-        <!-- Dashboard -->
-        <a href="dashboard.php" class="topbar-link">
+        <!-- Header -->
+        <div class="top-section">
 
-            <div class="topbar-item">
-
-                <img src="../../assets/icons/dashboard.png"
-                     class="topbar-icon">
-
-                <span>Dashboard</span>
-
+            <div class="title">
+                User Management
             </div>
 
-        </a>
+            <a href="../user_management/add_user.php" class="add-btn">
+                + Add New User
+            </a>
 
-        <!-- User Management -->
-        <a href="user_management.php" class="topbar-link active">
+        </div>
 
-            <div class="topbar-item">
+        <!-- Search -->
+        <form class="search-box" method="GET">
 
-                <img src="../../assets/icons/user-management.png" class="topbar-icon">
+            <input type="text" name="search" placeholder="Search using User ID, Name, IC Number..." value="<?php echo htmlspecialchars($search); ?>">
 
-                <span>User Management</span>
+            <button type="submit">
+                Search
+            </button>
 
+        </form>
+
+        <!-- Empty -->
+        <?php if($search === ''): ?>
+
+            <div class="empty-result">
+                Please search using User ID, Name, IC Number...
             </div>
 
-        </a>
+        <?php elseif(empty($users)): ?>
 
-        <!-- Event Management -->
-        <a href="event_management.php" class="topbar-link">
-
-            <div class="topbar-item">
-
-                <img src="../../assets/icons/events.png" class="topbar-icon">
-
-                <span>Event Management</span>
-
+            <div class="empty-result">
+                No users found.
             </div>
 
-        </a>
+        <?php else: ?>
 
-    </div>
+            <!-- Result -->
+            <div class="user-result-list">
 
-</div>
+                <?php foreach($users as $user): ?>
 
-<!-- Content -->
-<div class="container">
+                    <?php
 
-    <!-- Header -->
-    <div class="top-section">
+                    $photo = "../../uploads/profile_photo/default.png";
 
-        <div class="title">
-            User Management
-        </div>
+                    if(!empty($user['profile_photo']))
+                    {
+                        $photo = "../../uploads/profile_photo/" . $user['profile_photo'];
+                    }
 
-        <a href="add_user.php" class="add-btn">
-            + Add New User
-        </a>
+                    ?>
 
-    </div>
+                    <a href="../user_management/edit_user.php?user_id=<?php echo $user['user_id']; ?>" class="user-card">
 
-    <!-- Search -->
-    <form class="search-box" method="GET">
+                        <div class="user-card-left">
 
-        <input type="text" name="search" placeholder="Search using User ID, Name, IC Number..." value="<?php echo htmlspecialchars($search); ?>">
+                            <img src="<?php echo $photo; ?>" class="user-avatar">
 
-        <button type="submit">
-            Search
-        </button>
+                            <div class="user-info">
 
-    </form>
+                                <div class="user-name">
+                                    <?php echo $user['name']; ?>
+                                </div>
 
-    <!-- Empty -->
-    <?php if($search === ''): ?>
+                                <div class="user-meta">
+                                    ID:
+                                    <?php echo $user['user_id']; ?>
+                                </div>
 
-        <div class="empty-result">
-            Please search using User ID, Name, IC Number...
-        </div>
+                                <div class="user-meta">
+                                    IC:
+                                    <?php echo $user['identical_number']; ?>
+                                </div>
 
-    <?php elseif(empty($users)): ?>
+                                <div class="user-meta">
+                                    <?php echo $user['email']; ?>
+                                </div>
 
-        <div class="empty-result">
-            No users found.
-        </div>
-
-    <?php else: ?>
-
-        <!-- Result -->
-        <div class="user-result-list">
-
-            <?php foreach($users as $user): ?>
-
-                <?php
-
-                $photo = "../../uploads/profile_photo/default.png";
-
-                if(!empty($user['profile_photo']))
-                {
-                    $photo =
-                    "../../uploads/profile_photo/" .
-                    $user['profile_photo'];
-                }
-
-                ?>
-
-                <a href="edit_user.php?user_id=<?php echo $user['user_id']; ?>" class="user-card">
-
-                    <div class="user-card-left">
-
-                        <img src="<?php echo $photo; ?>" class="user-avatar">
-
-                        <div class="user-info">
-
-                            <div class="user-name">
-                                <?php echo $user['name']; ?>
-                            </div>
-
-                            <div class="user-meta">
-                                ID:
-                                <?php echo $user['user_id']; ?>
-                            </div>
-
-                            <div class="user-meta">
-                                IC:
-                                <?php echo $user['identical_number']; ?>
-                            </div>
-
-                            <div class="user-meta">
-                                <?php echo $user['email']; ?>
                             </div>
 
                         </div>
 
-                    </div>
+                        <div class="role-badge role-<?php echo strtolower($user['role']); ?>">
 
-                    <div class="role-badge role-<?php echo strtolower($user['role']); ?>">
+                            <?php echo ucfirst($user['role']); ?>
 
-                        <?php echo ucfirst($user['role']); ?>
+                        </div>
 
-                    </div>
+                    </a>
 
-                </a>
+                <?php endforeach; ?>
 
-            <?php endforeach; ?>
+            </div>
 
-        </div>
+        <?php endif; ?>
 
-    <?php endif; ?>
-
-</div>
+    </div>
 
 </body>
 
