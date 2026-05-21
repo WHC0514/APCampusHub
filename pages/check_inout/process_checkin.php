@@ -6,8 +6,27 @@ require_once("../../config/db.php");
 
 date_default_timezone_set("Asia/Kuala_Lumpur");
 
+/* Show error and redirect user to their dashboard */
+function fail($msg)
+{
+    $role = $_SESSION['role'] ?? 'student';
+
+    if($role === "lecturer") {
+        $redirect = "../lecturer/dashboard.php";
+    } else {
+        $redirect = "../student/dashboard.php";
+    }
+
+    echo "<script>
+        alert('$msg');
+        window.location.href = '$redirect';
+    </script>";
+
+    exit();
+}
+
 if(!isset($_POST['booking_id'], $_POST['otp'])) {
-    die("Invalid request");
+    fail("Invalid request");
 }
 
 $userID = $_SESSION['user_id'];
@@ -24,7 +43,7 @@ $stmt->bind_param("ii", $bookingID, $userID);
 $stmt->execute();
 $booking = $stmt->get_result()->fetch_assoc();
 
-if(!$booking) die("Booking not found");
+if(!$booking) fail("Booking not found");
 
 $roomID = $booking['room_id'];
 
@@ -35,10 +54,10 @@ $stmt->bind_param("i", $roomID);
 $stmt->execute();
 $otp = $stmt->get_result()->fetch_assoc();
 
-if(!$otp) die("OTP not found");
+if(!$otp) fail("OTP not found");
 
 if($userOTP != $otp['otp_code']) {
-    die("Invalid OTP");
+    fail("Invalid OTP");
 }
 
 /* Insert check-in */
