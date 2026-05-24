@@ -19,7 +19,7 @@ if(isset($_GET['search']))
 }
 
 /* SQL Base */
-$sqlVenue = "SELECT * FROM event_venue";
+$sqlVenue = "SELECT * FROM event_venue WHERE 1=1";
 
 $params = [];
 $types = "";
